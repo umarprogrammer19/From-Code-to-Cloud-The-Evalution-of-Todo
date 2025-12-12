@@ -9,7 +9,9 @@
       "Bash(git commit -m \"docs: update constitution for Phase 1 constraints\n\n- Establish Terminal-based Todo App scope\n- Define tech stack requirements (typer, rich, pydantic, pytest)\n- Set architecture guidelines (src/core/, src/cli/, data/ structure)\n- Specify data management using JSON files only\")",
       "Bash(git push -u origin update-constitution-phase1)",
       "Bash(gh --version)",
-      "Bash(cat specs/001-cli-todo-app/checklists/requirements.md)"
+      "Bash(cat specs/001-cli-todo-app/checklists/requirements.md)",
+      "Bash(mkdir -p history/prompts/002-interactive-cli/)",
+      "Bash(git commit -m \"docs(constitution): update constitution for interactive CLI phase\n\n- Update Project Scope to focus on Menu-Driven Todo App with arrow key navigation\n- Enhance Tech Stack Standards to emphasize questionary for input and rich for output\n- Add new UX Standards section with clear screen and feedback requirements\n- Update architecture constraints to reflect new technology priorities\n- Update development workflow to include questionary menus\n- Update constitution version from 1.0.0 to 1.1.0\")"
     ]
   }
 }
