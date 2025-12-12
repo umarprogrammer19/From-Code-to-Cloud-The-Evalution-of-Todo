@@ -31,12 +31,12 @@ def run_interactive_mode():
         choice = questionary.select(
             "What would you like to do?",
             choices=[
-                {"name": "➕ Add Task", "value": "add"},
-                {"name": "📋 List Tasks", "value": "list"},
-                {"name": "✅ Complete Task", "value": "complete"},
-                {"name": "✏️ Update Task", "value": "update"},
-                {"name": "❌ Delete Task", "value": "delete"},
-                {"name": "🚪 Exit", "value": "exit"}
+                {"name": "Add Task", "value": "add"},
+                {"name": "List Tasks", "value": "list"},
+                {"name": "Complete Task", "value": "complete"},
+                {"name": "Update Task", "value": "update"},
+                {"name": "Delete Task", "value": "delete"},
+                {"name": "Exit", "value": "exit"},
             ]
         ).ask()
 
