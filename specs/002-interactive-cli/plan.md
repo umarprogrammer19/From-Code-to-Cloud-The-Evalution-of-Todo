@@ -1,102 +1,91 @@
-# 002-interactive-cli: Implementation Plan
+# Implementation Plan: Refactor src/todo.py for Interactive CLI Mode
 
-## Architecture Overview
-This plan outlines the implementation of the interactive CLI mode while maintaining backward compatibility with the existing command-line interface.
+**Branch**: `002-interactive-cli` | **Date**: 2025-12-13 | **Spec**: [specs/002-interactive-cli/spec.md](specs/002-interactive-cli/spec.md)
+**Input**: Feature specification from `/specs/002-interactive-cli/spec.md`
 
-## Scope
-- Add interactive mode support to the CLI application
-- Maintain all existing CLI functionality
-- Enhance user experience with rich banners and interactive menus
+**Note**: This template is filled in by the `/sp.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
 
-## Out of Scope
-- Changing data models or storage mechanism
-- Adding new task features beyond the current functionality
-- Modifying the core TaskManager logic
+## Summary
 
-## Key Decisions
+This plan outlines the refactoring of `src/todo.py` to implement an interactive CLI mode. The application will support both traditional command-line interface (when arguments are provided) and an interactive menu-driven interface (when run without arguments). The implementation will use `questionary` for interactive prompts and `rich.figlet` for banner display.
 
-### 1. Mode Detection Strategy
-- **Decision**: Use `len(sys.argv) == 1` to detect when no arguments are provided
-- **Rationale**: Simple and reliable method to distinguish between interactive and CLI modes
-- **Trade-offs**: Requires import of sys module, but provides clean separation
+## Technical Context
 
-### 2. Dependency Selection
-- **Decision**: Use `questionary` for interactive prompts and `pyfiglet` for banners
-- **Rationale**: Questionary provides rich interactive UI components, pyfiglet creates attractive ASCII art
-- **Trade-offs**: Adds two new dependencies but significantly improves UX
+**Language/Version**: Python 3.13
+**Primary Dependencies**: typer (CLI framework), rich (UI formatting), pydantic (data validation), questionary (interactive prompts), pyfiglet (banner display)
+**Storage**: Local JSON file (data/tasks.json)
+**Testing**: pytest for all test cases
+**Target Platform**: Cross-platform terminal application (Windows, macOS, Linux)
+**Project Type**: Single terminal application
+**Performance Goals**: Sub-second response time for all operations
+**Constraints**: Must maintain backward compatibility with existing CLI commands
+**Scale/Scope**: Single-user terminal application with local storage
 
-### 3. Code Organization
-- **Decision**: Add interactive functions to existing commands module with separate handlers
-- **Rationale**: Keeps related functionality together while maintaining clear separation of concerns
-- **Trade-offs**: Commands module will grow but remains organized with clear function names
+## Constitution Check
 
-## Interfaces and API Contracts
+*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-### Public Interface Changes
-- No changes to existing CLI commands
-- New entry point behavior when run without arguments
+- ✅ **Project Scope**: Terminal-based Todo App with local file storage only - COMPLIES
+- ✅ **Tech Stack Standards**: Using typer, rich, pydantic, pytest - COMPLIES
+- ✅ **Architecture**: src/core/ for business logic, src/cli/ for interface logic - COMPLIES
+- ✅ **Test-First Approach**: All new features will have corresponding tests - COMPLIES
+- ✅ **Data Management**: Using local JSON file storage with pydantic models - COMPLIES
+- ✅ **Code Quality**: Clean architecture with separation of concerns - COMPLIES
+- ✅ **Dependencies**: Using uv add for dependencies - COMPLIES (dependencies already added via pyproject.toml)
 
-### Internal Interface Changes
-- Add `run_interactive_mode()` function to commands module
-- Add separate handler functions for each interactive operation
+## Project Structure
 
-## Non-Functional Requirements
+### Documentation (this feature)
 
-### Performance
-- Interactive mode should start quickly (under 1 second)
-- Menu navigation should be responsive (under 100ms response time)
+```text
+specs/002-interactive-cli/
+├── plan.md              # This file (/sp.plan command output)
+├── research.md          # Phase 0 output (/sp.plan command)
+├── data-model.md        # Phase 1 output (/sp.plan command)
+├── quickstart.md        # Phase 1 output (/sp.plan command)
+├── contracts/           # Phase 1 output (/sp.plan command)
+└── tasks.md             # Phase 2 output (/sp.tasks command - NOT created by /sp.plan)
+```
 
-### Reliability
-- All existing CLI functionality must remain 100% functional
-- Error handling should be consistent with current implementation
+### Source Code (repository root)
 
-### Security
-- No security implications as this is a local application
-- Input validation remains the same as current implementation
+```text
+src/
+├── core/
+│   ├── models.py        # Pydantic models for Task, TaskCollection, enums
+│   └── manager.py       # TaskManager with CRUD operations
+├── cli/
+│   ├── commands.py      # Typer app with interactive mode implementation
+│   └── __init__.py
+└── todo.py             # Main entry point with mode detection logic
 
-## Implementation Strategy
+data/
+└── tasks.json          # JSON file for task persistence
 
-### Phase 1: Dependencies and Entry Point
-1. Add required dependencies to pyproject.toml
-2. Modify main entry point to detect and handle interactive mode
-3. Implement banner display function
+tests/
+├── unit/
+│   ├── test_models.py
+│   └── test_manager.py
+└── integration/
+    └── test_cli.py
 
-### Phase 2: Core Interactive Functions
-1. Implement main menu loop with questionary
-2. Create handler functions for each menu option
-3. Ensure proper exit functionality
+pyproject.toml          # Project dependencies and configuration
+```
 
-### Phase 3: Workflow Implementation
-1. Implement add task workflow with validation
-2. Implement complete task workflow with pending tasks filtering
-3. Implement update task workflow with selection
-4. Implement delete task workflow with confirmation
-5. Implement list tasks with existing table format
+**Structure Decision**: Single terminal application structure with proper separation of concerns between core business logic and CLI interface. The `src/todo.py` file serves as the main entry point that determines whether to run in interactive or command-line mode based on arguments.
 
-### Phase 4: Integration and Testing
-1. Test all interactive workflows
-2. Verify backward compatibility
-3. Test error handling and edge cases
+## Phase 1 Deliverables Summary
 
-## Risk Analysis
+- ✅ **research.md**: Created with analysis of technical decisions
+- ✅ **data-model.md**: Created with entity definitions and relationships
+- ✅ **quickstart.md**: Created with setup and usage instructions
+- ✅ **contracts/**: Created with CLI API contract documentation
+- ✅ **Agent context updated**: Updated CLAUDE.md with new technologies
 
-### High Risk Items
-1. **Console Compatibility**: Interactive prompts may have issues on different terminals
-   - Mitigation: Test on multiple environments, provide fallback error handling
+## Complexity Tracking
 
-### Medium Risk Items
-1. **Dependency Integration**: New dependencies may conflict with existing ones
-   - Mitigation: Use established, well-maintained libraries with good compatibility
+> **Fill ONLY if Constitution Check has violations that must be justified**
 
-## Operational Readiness
-
-### Testing Strategy
-- Unit tests for new interactive functions
-- Integration tests for workflow validation
-- Manual testing of all interactive paths
-- Regression testing for CLI functionality
-
-### Deployment Considerations
-- No special deployment requirements
-- Application remains a simple Python package
-- Dependencies are standard and well-supported
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| N/A | N/A | N/A |
