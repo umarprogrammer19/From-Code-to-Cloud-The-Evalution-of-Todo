@@ -208,3 +208,10 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- Python 3.11+ + typer (CLI framework), rich (UI formatting), pydantic (data validation) (001-cli-todo-app)
+- Local JSON file (data/tasks.json) (001-cli-todo-app)
+
+## Recent Changes
+- 001-cli-todo-app: Added Python 3.11+ + typer (CLI framework), rich (UI formatting), pydantic (data validation)
