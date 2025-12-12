@@ -5,7 +5,10 @@
       "Bash(git rev-parse --is-inside-work-tree)",
       "Bash(git rev-parse --abbrev-ref HEAD)",
       "Bash(git checkout -b update-constitution-phase1)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"docs: update constitution for Phase 1 constraints\n\n- Establish Terminal-based Todo App scope\n- Define tech stack requirements (typer, rich, pydantic, pytest)\n- Set architecture guidelines (src/core/, src/cli/, data/ structure)\n- Specify data management using JSON files only\")",
+      "Bash(git push -u origin update-constitution-phase1)",
+      "Bash(gh --version)"
     ]
   }
 }
