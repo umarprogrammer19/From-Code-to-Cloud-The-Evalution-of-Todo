@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+from_code_to_cloud_the_evolution_of_todo.egg-info/PKG-INFO
+from_code_to_cloud_the_evolution_of_todo.egg-info/SOURCES.txt
+from_code_to_cloud_the_evolution_of_todo.egg-info/dependency_links.txt
+from_code_to_cloud_the_evolution_of_todo.egg-info/entry_points.txt
+from_code_to_cloud_the_evolution_of_todo.egg-info/requires.txt
+from_code_to_cloud_the_evolution_of_todo.egg-info/top_level.txt
+src/__init__.py
+src/todo.py
+src/cli/__init__.py
+src/cli/commands.py
+src/core/__init__.py
+src/core/manager.py
+src/core/models.py
