@@ -1,55 +1,57 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- SYNC IMPACT REPORT:
+Version change: N/A -> 1.0.0
+Modified principles: None (new constitution)
+Added sections: All sections
+Removed sections: None
+Templates requiring updates:
+  - .specify/templates/plan-template.md ✅ updated
+  - .specify/templates/spec-template.md ✅ updated
+  - .specify/templates/tasks-template.md ✅ updated
+  - .specify/templates/commands/*.md ⚠ pending
+Follow-up TODOs: None
+-->
+# Todo App Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Project Scope (CLI Only)
+Terminal-based Todo App with local file storage only; No databases (SQL), No APIs (FastAPI), No AI integration allowed; Permitted: Local File I/O (JSON) only for persistence
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Tech Stack Standards
+STRICTLY use `uv add` for dependencies; CLI Framework: `typer`; UI Framework: `rich` (for colors and tables); Data: `pydantic` (for validation); Testing: `pytest`
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Architecture (Non-Negotiable)
+src/core/: Business Logic (Models, Manager); src/cli/: Interface Logic (Typer commands); data/: Storage for tasks.json; Strict separation of concerns between layers
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Test-First Approach
+TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced; pytest for all test cases
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Data Management
+Local JSON file storage only; tasks.json as the single source of truth; Proper serialization/deserialization with pydantic models; Data integrity and validation required
 
-### [PRINCIPLE_6_NAME]
+### VI. Code Quality Standards
+All code must follow clean architecture principles; Models in src/core/ must be independent of CLI layer; Error handling for file I/O operations; Type hints required throughout
 
+## Architecture Constraints
 
-[PRINCIPLE__DESCRIPTION]
+- Package Manager: STRICTLY use `uv add` for dependencies
+- CLI Framework: `typer` for command-line interface
+- UI Framework: `rich` for colors and tables
+- Data: `pydantic` for validation
+- Testing: `pytest` for all tests
+- Forbidden: No databases (SQL), No APIs (FastAPI), No AI integration yet
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Development Workflow
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- src/core/: Business Logic (Models, Manager)
+- src/cli/: Interface Logic (Typer commands)
+- data/: Storage for tasks.json
+- All new features must have corresponding tests
+- Code reviews must verify compliance with architecture constraints
+- Follow separation of concerns strictly
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+All implementations must comply with this constitution; Architecture violations must be corrected; Dependencies must be added via `uv add` only; All file I/O must use JSON format; Changes to architecture require constitution amendments
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-12 | **Last Amended**: 2025-12-12
