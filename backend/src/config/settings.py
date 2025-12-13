@@ -1,0 +1,30 @@
+from pydantic_settings import BaseSettings
+from typing import Optional
+import os
+
+
+class Settings(BaseSettings):
+    """
+    Application settings loaded from environment variables.
+    """
+    app_name: str = "Task Management API"
+    api_version: str = "v1"
+    debug: bool = False
+
+    # Database settings
+    database_url: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/dbname")
+
+    # JWT settings
+    secret_key: str = os.getenv("SECRET_KEY", "your-secret-key-here")
+    algorithm: str = os.getenv("ALGORITHM", "HS256")
+    access_token_expire_minutes: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30"))
+
+    # CORS settings
+    allowed_origins: str = os.getenv("ALLOWED_ORIGINS", "http://localhost,http://localhost:3000")
+
+    class Config:
+        env_file = ".env"
+
+
+# Create a single instance of settings
+settings = Settings()
