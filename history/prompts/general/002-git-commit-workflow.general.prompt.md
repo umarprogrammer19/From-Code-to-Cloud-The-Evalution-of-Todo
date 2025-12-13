@@ -1,5 +1,5 @@
 ---
-id: "003"
+id: "002"
 title: "Git Commit Workflow"
 stage: "general"
 date_iso: "2025-12-13"
@@ -14,7 +14,7 @@ link_spec: "null"
 link_ticket: "null"
 link_adr: "null"
 link_pr: "null"
-files_yaml: |
+files_yaml: 
   - backend/main.py
   - backend/data/database.py
   - backend/src/models/task.py
@@ -25,7 +25,7 @@ files_yaml: |
   - backend/README.md
   - specs/003-phase2-backend-tasks/tasks.md
   - history/prompts/003-phase2-backend-tasks/001-backend-implementation.implementation.prompt.md
-tests_yaml: |
+tests_yaml: 
   - none
 ---
 
