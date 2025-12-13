@@ -1,12 +1,12 @@
 ---
-id: 1
+id: "001"
 title: update-constitution-phase1
 stage: constitution
 date: 2025-12-12
 surface: agent
 model: claude-opus-4-5-20251101
 feature: none
-branch: master
+branch: main
 user: Umar Farooq
 command: /sp.constitution
 labels: [constitution,architecture,constraints]
