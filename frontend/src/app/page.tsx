@@ -1,24 +1,27 @@
-import "@/styles/globals.css";
-import type { AppProps } from "next/app";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SessionProvider } from "better-auth/react";
+'use client';
 
-// Create a client for React Query
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+import { useEffect } from 'react';
+import { useSession } from 'better-auth/react';
+import { useRouter } from 'next/navigation';
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function HomePage() {
+  const { data: session, isPending } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isPending) {
+      if (session) {
+        router.push('/dashboard');
+      } else {
+        router.push('/login');
+      }
+    }
+  }, [session, isPending, router]);
+
+  // Show a loading state while determining where to redirect
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </QueryClientProvider>
+    <div className="flex justify-center items-center h-screen">
+      <div className="text-lg">Redirecting...</div>
+    </div>
   );
 }
