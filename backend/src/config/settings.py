@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     debug: bool = False
 
     # Database settings
-    database_url: str = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/dbname")
+    database_url: str = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
     # JWT settings
     secret_key: str = os.getenv("SECRET_KEY", "your-secret-key-here")

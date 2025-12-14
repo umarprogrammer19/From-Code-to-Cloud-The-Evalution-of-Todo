@@ -5,14 +5,20 @@ import os
 from contextlib import contextmanager
 
 # Get database URL from environment, with a default for development
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://user:password@localhost/dbname")
+from src.config.settings import settings
+DATABASE_URL = settings.database_url
 
-# Create the engine with appropriate settings for async use
+# Create the engine with appropriate settings based on database type
+connect_args = {}
+if DATABASE_URL.startswith("sqlite"):
+    connect_args["check_same_thread"] = False
+
 engine = create_engine(
     DATABASE_URL,
     echo=False,  # Set to True to see SQL queries in logs
     pool_pre_ping=True,  # Verify connections before use
     pool_recycle=300,  # Recycle connections after 5 minutes
+    connect_args=connect_args
 )
 
 def get_session() -> Generator[Session, None, None]:
