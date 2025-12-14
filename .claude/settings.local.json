@@ -18,7 +18,12 @@
       "Bash(copy \"C:/Users/Umar Farooq/Desktop/From-Code-to-Cloud-The-Evalution-of-Todo/specs/005-frontend/spec_updated.md\" \"C:/Users/Umar Farooq/Desktop/From-Code-to-Cloud-The-Evalution-of-Todo/specs/005-frontend/spec.md\")",
       "SlashCommand(/sp.analyze)",
       "Bash(.specify/scripts/bash/setup-plan.sh --json)",
-      "SlashCommand(/sp.tasks)"
+      "SlashCommand(/sp.tasks)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat(frontend): complete Phase 2 Frontend specification\n\n- Create comprehensive spec for Next.js Todo Dashboard with better-auth and JWT\n- Implement authentication system with better-auth and JWT plugin\n- Design responsive UI using Next.js and Tailwind CSS\n- Plan integration with FastAPI backend ensuring JWT tokens sent with every request\n- Add research, data model, quickstart guide, and API contracts\n- Generate detailed task breakdown for implementation\n- Perform quality analysis and validation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(npm install better-auth)",
+      "Bash(cat /tmp/claude/tasks/b02a898.output)",
+      "Bash(ls -la frontend/next.config.*)",
+      "Bash(npm install --save-dev webpack-bundle-analyzer)"
     ]
   }
 }
