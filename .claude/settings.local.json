@@ -24,7 +24,8 @@
       "Bash(cat /tmp/claude/tasks/b02a898.output)",
       "Bash(ls -la frontend/next.config.*)",
       "Bash(npm install --save-dev webpack-bundle-analyzer)",
-      "Bash(npm run dev)"
+      "Bash(npm run dev)",
+      "Bash(npm install @tanstack/react-query better-auth)"
     ]
   }
 }

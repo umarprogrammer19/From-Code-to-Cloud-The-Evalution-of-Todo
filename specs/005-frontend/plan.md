@@ -51,10 +51,12 @@ frontend/
 │   │   ├── dashboard/
 │   │   ├── todos/
 │   │   └── ui/
-│   ├── pages/
-│   │   ├── index.tsx
-│   │   ├── login.tsx
-│   │   └── dashboard.tsx
+│   ├── app/
+│   │   ├── page.tsx
+│   │   ├── login/
+|   |   |   ├── page.tsx
+│   │   ├── dashboard/
+|   |   └── ├── page.tsx
 │   ├── services/
 │   │   ├── auth.ts
 │   │   ├── api.ts
@@ -67,7 +69,7 @@ frontend/
 │   └── types/
 │       └── index.ts
 ├── public/
-├── pages/
+├── app/
 ├── components/
 ├── lib/
 └── utils/
