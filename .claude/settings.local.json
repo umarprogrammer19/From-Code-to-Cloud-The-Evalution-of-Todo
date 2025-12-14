@@ -14,7 +14,11 @@
       "Bash(git commit -m \"docs(constitution): update constitution for interactive CLI phase\n\n- Update Project Scope to focus on Menu-Driven Todo App with arrow key navigation\n- Enhance Tech Stack Standards to emphasize questionary for input and rich for output\n- Add new UX Standards section with clear screen and feedback requirements\n- Update architecture constraints to reflect new technology priorities\n- Update development workflow to include questionary menus\n- Update constitution version from 1.0.0 to 1.1.0\")",
       "Bash(python -m pip install \"python-jose[cryptography]\")",
       "Bash(pip install asyncpg)",
-      "Bash(cat \"specs/004-task-priority-backend/spec.md\")"
+      "Bash(cat \"specs/004-task-priority-backend/spec.md\")",
+      "Bash(copy \"C:/Users/Umar Farooq/Desktop/From-Code-to-Cloud-The-Evalution-of-Todo/specs/005-frontend/spec_updated.md\" \"C:/Users/Umar Farooq/Desktop/From-Code-to-Cloud-The-Evalution-of-Todo/specs/005-frontend/spec.md\")",
+      "SlashCommand(/sp.analyze)",
+      "Bash(.specify/scripts/bash/setup-plan.sh --json)",
+      "SlashCommand(/sp.tasks)"
     ]
   }
 }
