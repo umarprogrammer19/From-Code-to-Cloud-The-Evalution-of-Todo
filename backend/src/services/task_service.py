@@ -1,8 +1,12 @@
 from sqlmodel import Session, select
 from typing import List, Optional
-from ..models.task import Task
+import logging
+from ..models.task import Task, PriorityLevel
 from ..schemas.task import TaskCreate, TaskUpdate
 from fastapi import HTTPException, status
+
+# Set up logging
+logger = logging.getLogger(__name__)
 
 
 class TaskService:
@@ -15,15 +19,18 @@ class TaskService:
         """
         Create a new task for the specified user.
         """
+        logger.info(f"Creating task for user {user_id} with priority: {task_in.priority or 'medium'}")
         task = Task(
             title=task_in.title,
             description=task_in.description,
             completed=task_in.completed,
+            priority=task_in.priority if task_in.priority else PriorityLevel.medium,
             user_id=user_id
         )
         session.add(task)
         session.commit()
         session.refresh(task)
+        logger.info(f"Task created successfully with ID {task.id} and priority {task.priority}")
         return task
 
     @staticmethod
@@ -42,12 +49,16 @@ class TaskService:
         return task
 
     @staticmethod
-    def get_tasks_by_user(*, session: Session, user_id: int) -> List[Task]:
+    def get_tasks_by_user(*, session: Session, user_id: int, priority: Optional[PriorityLevel] = None) -> List[Task]:
         """
-        Get all tasks for the specified user.
+        Get all tasks for the specified user, optionally filtered by priority.
         """
+        logger.info(f"Retrieving tasks for user {user_id}, priority filter: {priority}")
         statement = select(Task).where(Task.user_id == user_id)
+        if priority:
+            statement = statement.where(Task.priority == priority)
         tasks = session.exec(statement).all()
+        logger.info(f"Retrieved {len(tasks)} tasks for user {user_id}, priority filter: {priority}")
         return tasks
 
     @staticmethod
@@ -64,6 +75,7 @@ class TaskService:
                 detail="Task does not belong to the user"
             )
 
+        logger.info(f"Updating task {task_id} for user {user_id}, priority update: {getattr(task_in, 'priority', None)}")
         update_data = task_in.dict(exclude_unset=True)
         for field, value in update_data.items():
             setattr(task, field, value)
@@ -71,6 +83,7 @@ class TaskService:
         session.add(task)
         session.commit()
         session.refresh(task)
+        logger.info(f"Task {task_id} updated successfully, new priority: {task.priority}")
         return task
 
     @staticmethod

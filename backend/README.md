@@ -7,6 +7,7 @@ This is the backend service for the Task Management application, built with Fast
 - JWT-based authentication and authorization
 - User data isolation (users can only access their own tasks)
 - Full CRUD operations for tasks
+- Task priority management (low, medium, high, urgent)
 - RESTful API design
 - PostgreSQL database with SQLModel ORM
 
@@ -14,9 +15,9 @@ This is the backend service for the Task Management application, built with Fast
 
 All endpoints follow the pattern `/api/{user_id}/...` where `user_id` must match the user_id in the JWT token.
 
-- `POST /api/{user_id}/tasks` - Create a new task
-- `GET /api/{user_id}/tasks` - Get all tasks for a user
-- `PUT /api/{user_id}/tasks/{id}` - Update a specific task
+- `POST /api/{user_id}/tasks` - Create a new task (supports priority field)
+- `GET /api/{user_id}/tasks` - Get all tasks for a user (supports priority filtering with ?priority=high)
+- `PUT /api/{user_id}/tasks/{id}` - Update a specific task (supports priority updates)
 - `DELETE /api/{user_id}/tasks/{id}` - Delete a specific task
 
 ## Requirements

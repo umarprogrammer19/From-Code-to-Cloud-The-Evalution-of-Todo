@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session
-from typing import List
+from typing import List, Optional
 from ...services.task_service import TaskService
 from ...schemas.task import TaskCreate, TaskUpdate, TaskResponse
 from ...api.deps import get_db_session, verify_user_id_dependency
@@ -28,12 +28,24 @@ def create_task(
 def read_tasks(
     *,
     db_session: Session = Depends(get_db_session),
-    user_id: int = Depends(verify_user_id_dependency)
+    user_id: int = Depends(verify_user_id_dependency),
+    priority: Optional[str] = None
 ):
     """
-    Get all tasks for the specified user.
+    Get all tasks for the specified user, optionally filtered by priority.
     """
-    tasks = TaskService.get_tasks_by_user(session=db_session, user_id=user_id)
+    from ...models.task import PriorityLevel
+    priority_enum = None
+    if priority:
+        try:
+            priority_enum = PriorityLevel(priority)
+        except ValueError:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid priority value. Must be one of: low, medium, high, urgent"
+            )
+
+    tasks = TaskService.get_tasks_by_user(session=db_session, user_id=user_id, priority=priority_enum)
     return tasks
 
 
