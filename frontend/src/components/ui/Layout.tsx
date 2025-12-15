@@ -1,8 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSession } from 'better-auth/react';
-import { signOut as betterAuthSignOut } from 'better-auth/react';
+import { useSession, signOut as betterAuthSignOut } from '@/lib/auth-client';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 

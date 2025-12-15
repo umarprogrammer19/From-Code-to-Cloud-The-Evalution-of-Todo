@@ -25,7 +25,18 @@
       "Bash(ls -la frontend/next.config.*)",
       "Bash(npm install --save-dev webpack-bundle-analyzer)",
       "Bash(npm run dev)",
-      "Bash(npm install @tanstack/react-query better-auth)"
+      "Bash(npm install @tanstack/react-query better-auth)",
+      "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\" /s)",
+      "Bash(findstr auth)",
+      "Bash(powershell Get-ChildItem -Path \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\" -Recurse -Include \"*auth*\")",
+      "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\" /s)",
+      "Bash(findstr -i \"auth.config\\|auth.config\\|auth.ts\\|auth.js\")",
+      "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\" /b /s)",
+      "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\backend\" /s)",
+      "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\\src\" /s)",
+      "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\\src\\app\" /s)",
+      "WebFetch(domain:www.better-auth.com)",
+      "WebSearch"
     ]
   }
 }

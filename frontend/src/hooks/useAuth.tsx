@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import { useSession } from 'better-auth/react';
-import { signIn as betterAuthSignIn, signOut as betterAuthSignOut } from 'better-auth/react';
+import { useSession, signIn as betterAuthSignIn, signOut as betterAuthSignOut } from '@/lib/auth-client';
 import { getCurrentSession } from '@/services/auth';
 
 interface AuthContextType {

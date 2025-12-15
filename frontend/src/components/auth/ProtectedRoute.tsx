@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSession } from 'better-auth/react';
+import { useSession } from '@/lib/auth-client';
 import { useRouter, usePathname } from 'next/navigation';
 import { redirect } from 'next/navigation';
 

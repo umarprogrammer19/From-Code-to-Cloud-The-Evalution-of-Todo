@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSession } from 'better-auth/react';
+import { useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 

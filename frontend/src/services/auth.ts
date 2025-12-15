@@ -1,11 +1,16 @@
-import { getJWT } from 'better-auth/client';
 
 // Function to get the JWT token from better-auth session
 export const getJWTToken = async (): Promise<string> => {
   try {
-    // Use better-auth's getJWT function to retrieve the token
-    const token = await getJWT();
-    return token || '';
+    // For now, we'll implement this differently since getJWT is not available
+    // In a real implementation, you would get the token from the session
+    // This is a placeholder implementation
+    const sessionResponse = await fetch('/api/auth/session');
+    if (sessionResponse.ok) {
+      const sessionData = await sessionResponse.json();
+      return sessionData?.token || '';
+    }
+    return '';
   } catch (error) {
     console.error('Error getting JWT token:', error);
     return '';

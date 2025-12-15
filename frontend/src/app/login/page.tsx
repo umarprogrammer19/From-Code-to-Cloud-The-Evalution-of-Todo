@@ -1,8 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSession } from 'better-auth/react';
-import { signIn as betterAuthSignIn } from 'better-auth/react';
+import { useSession, signIn as betterAuthSignIn } from '@/lib/auth-client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 

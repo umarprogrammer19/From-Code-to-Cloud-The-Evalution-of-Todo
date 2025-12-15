@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SessionProvider } from "better-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,9 +29,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryClientProvider client={queryClient}>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
+          {children}
         </QueryClientProvider>
       </body>
     </html>

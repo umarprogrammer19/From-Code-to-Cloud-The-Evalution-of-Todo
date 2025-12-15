@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSession } from 'better-auth/react';
+import { useSession } from '@/lib/auth-client';
 import { redirect } from 'next/navigation';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Layout from '@/components/ui/Layout';
