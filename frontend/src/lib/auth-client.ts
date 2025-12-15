@@ -1,7 +1,6 @@
 import { createAuthClient } from 'better-auth/react';
 
-// Initialize the auth client with your backend endpoint
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BETTER_AUTH_URL || 'http://localhost:3000';
 
 export const authClient = createAuthClient({
   baseURL: API_BASE_URL,
