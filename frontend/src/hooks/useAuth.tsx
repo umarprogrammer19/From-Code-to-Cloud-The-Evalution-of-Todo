@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
-import { useSession, signIn as betterAuthSignIn, signOut as betterAuthSignOut } from '@/lib/auth-client';
+import { useSession, signIn as authSignIn, signOut as authSignOut } from '@/lib/auth-client';
 import { getCurrentSession } from '@/services/auth';
 
 interface AuthContextType {
@@ -54,11 +54,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      await betterAuthSignIn('credentials', {
-        email,
-        password,
-      });
-      // The session will be updated automatically by better-auth
+      await authSignIn(email, password);
+      // The session will be updated automatically by our auth system
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign in failed');
       throw err;
@@ -71,7 +68,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      await betterAuthSignOut();
+      await authSignOut();
       setUser(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign out failed');

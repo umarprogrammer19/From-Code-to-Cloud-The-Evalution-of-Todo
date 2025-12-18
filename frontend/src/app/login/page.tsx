@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSession, signIn as betterAuthSignIn } from '@/lib/auth-client';
+import { useSession, signIn } from '@/lib/auth-client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 
@@ -26,10 +26,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      await betterAuthSignIn('credentials', {
-        email,
-        password,
-      });
+      await signIn(email, password);
       router.push(redirect);
       router.refresh(); // Refresh to update the session context
     } catch (err) {

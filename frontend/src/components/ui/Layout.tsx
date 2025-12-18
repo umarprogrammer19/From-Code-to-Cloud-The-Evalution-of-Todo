@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useSession, signOut as betterAuthSignOut } from '@/lib/auth-client';
+import { useSession, signOut } from '@/lib/auth-client';
 import { Button } from './Button';
 import { useRouter } from 'next/navigation';
 
@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'Todo App' }) => {
 
   const handleSignOut = async () => {
     try {
-      await betterAuthSignOut();
+      await signOut();
       router.push('/login');
       router.refresh(); // Refresh to update the session context
     } catch (error) {

@@ -1,14 +1,8 @@
-import { betterAuth } from "better-auth";
-import { Pool } from "pg";
+// This configuration appears to be incorrect as it tries to connect to a database from the frontend
+// For now, we'll provide a minimal configuration or comment that this needs to be restructured
+// The proper approach would be to use the backend's JWT system or properly configure better-auth
+// to work with a backend API
 
-export const auth = betterAuth({
-  database: new Pool({
-    connectionString: process.env.NEXT_PUBLIC_DATABASE_URL || "postgres://user:password@localhost:5432/database",
-  }),
-  secret: process.env.NEXT_PUBLIC_BETTER_AUTH_SECRET || "",
-  baseURL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "http://localhost:3000",
-  trustHost: true,
-  emailAndPassword: {
-    enabled: true,
-  },
-});
+// Placeholder configuration - this file should not exist in the frontend if using backend auth
+// Instead, the frontend should communicate with the backend's auth endpoints
+console.warn("Auth configuration in frontend is not properly set up for database connection");

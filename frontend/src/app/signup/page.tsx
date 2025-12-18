@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSession } from '@/lib/auth-client';
+import { useSession, signUp } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
 
@@ -25,8 +25,7 @@ const SignupPage = () => {
     setError('');
 
     try {
-      // For now, we'll just redirect to login since better-auth handles sign up differently
-      // In a real implementation, we would use better-auth's sign up endpoint
+      await signUp(email, password, name);
       router.push('/login');
     } catch (err) {
       setError('An error occurred during sign up. Please try again.');

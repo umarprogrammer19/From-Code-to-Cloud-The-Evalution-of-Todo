@@ -21,15 +21,26 @@ class ApiClient {
     const { method = 'GET', body, headers = {}, retries = 3 } = options;
 
     // Get JWT token and add to headers
-    const token = await getJWTToken(); // Use await since getJWTToken is now async
-    const userId = getCurrentUserId(); // Get user ID for the endpoint path
+    const token = getJWTToken();
+    const userId = getCurrentUserId(); // Get user ID from the JWT token
 
-    // For endpoints that require user ID in the path, we'll handle that in the calling functions
-    // This is a general client that works with any endpoint
+    // For backend API, we need to inject the user_id into the path
+    // The backend expects routes in the format /api/{user_id}/...
+    let finalEndpoint = endpoint;
+    if (userId && endpoint.startsWith('/api/') && !endpoint.match(/\/api\/\d+\//)) {
+      // If the endpoint starts with /api/ but doesn't already have a user_id, inject it
+      finalEndpoint = endpoint.replace('/api/', `/api/${userId}/`);
+    }
 
     const authHeaders: Record<string, string> = token
       ? { Authorization: `Bearer ${token}` }
       : {};
+
+    // Use the backend API URL for task-related endpoints
+    const isTaskEndpoint = finalEndpoint.includes('/api/');
+    const baseUrlToUse = isTaskEndpoint
+      ? (process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:8000')
+      : this.baseUrl;
 
     const config: RequestInit = {
       method,
@@ -38,7 +49,7 @@ class ApiClient {
         ...authHeaders,
         ...headers,
       },
-      credentials: 'include', // Include cookies for session management
+      credentials: 'include', // Include cookies if needed
     };
 
     if (body) {
@@ -50,7 +61,7 @@ class ApiClient {
     // Retry mechanism
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        const response = await fetch(`${this.baseUrl}${endpoint}`, config);
+        const response = await fetch(`${baseUrlToUse}${finalEndpoint}`, config);
 
         // Handle 401 unauthorized responses
         if (response.status === 401) {
