@@ -1,4 +1,11 @@
-import { pool } from './src/lib/db.js';
+import { Pool } from 'pg';
+import 'dotenv/config';
+
+// Use environment variable for database connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL || 'postgresql://localhost:5432/todo_app',
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+});
 
 async function createUsersTable() {
   const createTableQuery = `
