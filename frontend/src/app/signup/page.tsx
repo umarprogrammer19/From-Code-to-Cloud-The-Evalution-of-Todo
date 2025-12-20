@@ -14,7 +14,6 @@ const SignupPage = () => {
 
   const { data: session } = useSession();
 
-  // If already logged in, redirect to dashboard
   if (session) {
     router.push('/dashboard');
     return null;
