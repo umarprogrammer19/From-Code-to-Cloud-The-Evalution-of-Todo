@@ -132,7 +132,7 @@ const useSession = (): Session => {
       // Since we don't have user details in the token, we'll need to get them separately
       // For now, we'll just set the ID and assume the email is unknown
       currentSession = {
-        user: { id: userId, email: 'user@example.com' }, // Email would need to be stored separately
+        user: { id: userId, email: 'umarofficial0121@gmail.com' }, // Email would need to be stored separately
         loading: false
       };
     }
