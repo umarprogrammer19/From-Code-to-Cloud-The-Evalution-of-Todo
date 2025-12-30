@@ -1,5 +1,4 @@
 from pydantic_settings import BaseSettings
-from typing import Optional
 import os
 
 
@@ -21,6 +20,13 @@ class Settings(BaseSettings):
 
     # CORS settings
     allowed_origins: str = os.getenv("ALLOWED_ORIGINS", "http://localhost,http://localhost:3000")
+
+    # Better Auth settings
+    better_auth_url: str = os.getenv("BETTER_AUTH_URL", "http://localhost:8000")
+    better_auth_secret: str = os.getenv("BETTER_AUTH_SECRET", "")
+
+    # Server settings
+    port: int = int(os.getenv("PORT", "8000"))
 
     class Config:
         env_file = ".env"

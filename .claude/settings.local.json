@@ -37,7 +37,8 @@
       "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\\src\\app\" /s)",
       "WebFetch(domain:www.better-auth.com)",
       "WebSearch",
-      "Bash(npx tsc --noEmit)"
+      "Bash(npx tsc --noEmit)",
+      "Bash(python -m uvicorn main:app --host 0.0.0.0 --port 8000)"
     ]
   }
 }
