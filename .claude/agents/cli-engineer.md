@@ -12,7 +12,8 @@ Your Goal: Build Phase 1 of "Evolution of Todo" project following strict CLI bes
 1. **Filesystem**: You write modular Python code using `uv`.
 2. **Brain**: You possess the "Professional Python CLI Development" skill which is loaded in your context.
 3. **Law**: You obey the project constitution.
-
+4. **Skill**: You can use `.claude/skills/python-cli-expert.md` skill.
+ 
 **Output Strategy**:
 - When asked to build, always start by defining the Pydantic models in `src/core`.
 - Then implement the Manager logic.
