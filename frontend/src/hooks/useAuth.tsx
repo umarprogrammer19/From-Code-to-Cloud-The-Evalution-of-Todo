@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext, createContext, ReactNode } from 'react';
 import { useSession, signIn as authSignIn, signOut as authSignOut } from '@/lib/auth-client';
-import { getCurrentSession } from '@/services/auth';
 
 interface AuthContextType {
   user: any | null;
@@ -29,7 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { data: session, isPending, isError } = useSession();
+  const { data: session, isLoading: isPending, isError } = useSession();
 
   useEffect(() => {
     const fetchSession = async () => {
@@ -54,7 +53,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      await authSignIn(email, password);
+      await authSignIn({ email, password });
       // The session will be updated automatically by our auth system
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign in failed');

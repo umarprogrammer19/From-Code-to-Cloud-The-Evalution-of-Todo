@@ -36,7 +36,8 @@
       "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\\src\" /s)",
       "Bash(dir \"C:\\Users\\HP\\Desktop\\From-Code-to-Cloud-The-Evalution-of-Todo\\frontend\\src\\app\" /s)",
       "WebFetch(domain:www.better-auth.com)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(npx tsc --noEmit)"
     ]
   }
 }

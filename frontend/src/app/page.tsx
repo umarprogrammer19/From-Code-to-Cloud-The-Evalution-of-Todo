@@ -5,7 +5,7 @@ import { useSession } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
-  const { data: session, isPending } = useSession();
+  const { data: session, isLoading: isPending } = useSession();
   const router = useRouter();
 
   useEffect(() => {

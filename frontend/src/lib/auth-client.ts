@@ -1,174 +1,114 @@
-// Custom auth client implementation that works with Next.js API routes
-// Using JWT-based authentication with Next.js API routes
+import { createAuthClient } from 'better-auth/react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-// Store the JWT token in localStorage
-const TOKEN_KEY = 'auth_token';
+// Create better-auth client
+export const authClient = createAuthClient({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+});
 
+// Define types
 interface User {
   id: number;
   email: string;
   name?: string;
 }
 
-interface Session {
-  user: User | null;
-  loading: boolean;
+interface SessionData {
+  user: User;
+  expiresAt: string;
 }
 
-// Mock session state - in a real implementation, you'd use React context or similar
-let currentSession: Session = { user: null, loading: false };
+// Sign in function
+const signIn = async ({ email, password }: { email: string; password: string }) => {
+  const response = await fetch('/api/auth/signin', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-// Function to get token from storage
-const getToken = (): string | null => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem(TOKEN_KEY);
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Sign in failed');
   }
-  return null;
+
+  const data = await response.json();
+  return data;
 };
 
-// Function to set token in storage
-const setToken = (token: string): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(TOKEN_KEY, token);
+// Sign up function
+const signUp = async ({ email, password, name }: { email: string; password: string; name?: string }) => {
+  const response = await fetch('/api/auth/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password, name }),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Sign up failed');
   }
-};
 
-// Function to remove token from storage
-const removeToken = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(TOKEN_KEY);
-  }
-};
-
-// Function to decode JWT and get user ID
-const getUserIdFromToken = (): number | null => {
-  const token = getToken();
-  if (!token) return null;
-
-  try {
-    // Split the JWT token to get the payload
-    const base64Url = token.split('.')[1];
-    if (!base64Url) return null;
-
-    // Replace URL-safe base64 chars with standard base64 chars
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-
-    // Decode the base64 string to get the JSON payload
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-
-    const payload = JSON.parse(jsonPayload);
-    return payload.userId || payload.sub || null;
-  } catch (error) {
-    console.error('Error decoding JWT token:', error);
-    return null;
-  }
-};
-
-// Sign in function that communicates with Next.js API routes
-const signIn = async (email: string, password: string): Promise<any> => {
-  try {
-    const response = await fetch('/api/auth/signin', { // Use Next.js API route
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Sign in failed');
-    }
-
-    const data = await response.json();
-
-    // Store the JWT token
-    if (data.token) {
-      setToken(data.token);
-
-      // Update session with user info
-      const userId = getUserIdFromToken();
-      currentSession = {
-        user: {
-          id: userId || data.user.id, // fallback to data.user.id if we can't decode token
-          email: data.user.email,
-          name: data.user.name
-        },
-        loading: false
-      };
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Sign in error:', error);
-    throw error;
-  }
+  const data = await response.json();
+  return data;
 };
 
 // Sign out function
-const signOut = async (): Promise<void> => {
-  try {
-    removeToken();
-    currentSession = { user: null, loading: false };
-  } catch (error) {
-    console.error('Sign out error:', error);
-    throw error;
+const signOut = async () => {
+  // Call the backend sign out endpoint
+  const response = await fetch('/api/auth/signout', {
+    method: 'POST',
+  });
+
+  if (!response.ok) {
+    throw new Error('Sign out failed');
+  }
+
+  // Clear any local storage or cookies as needed
+  if (typeof window !== 'undefined') {
+    localStorage.removeItem('auth_token');
   }
 };
 
-// Get session function
-const useSession = (): Session => {
-  // In a real implementation, you'd use React context to manage this state
-  // For now, we'll return a simple object
-  if (!currentSession.user && getToken()) {
-    // Token exists but no user loaded, try to get user info from token
-    const userId = getUserIdFromToken();
-    if (userId) {
-      // Since we don't have user details in the token, we'll need to get them separately
-      // For now, we'll just set the ID and assume the email is unknown
-      currentSession = {
-        user: { id: userId, email: 'umarofficial0121@gmail.com' }, // Email would need to be stored separately
-        loading: false
-      };
-    }
-  }
+// Custom useSession hook that follows React Query patterns
+export const useSession = () => {
+  return useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      // Check if we have a token in localStorage
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('auth_token');
+        if (!token) {
+          return null;
+        }
+      }
 
-  return currentSession;
+      // Fetch session data from the backend
+      const response = await fetch('/api/auth/session', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        // If the token is invalid or expired, return null
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('auth_token');
+        }
+          return null;
+      }
+
+      const sessionData = await response.json();
+      return sessionData;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1,
+    // This ensures the query is only run when the component is mounted
+    enabled: typeof window !== 'undefined' && !!localStorage.getItem('auth_token'),
+  });
 };
 
-// Sign up function that communicates with Next.js API routes
-const signUp = async (email: string, password: string, name?: string): Promise<any> => {
-  try {
-    const response = await fetch('/api/auth/signup', { // Use Next.js API route
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password, name }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Sign up failed');
-    }
-
-    const data = await response.json();
-
-    // Store the JWT token
-    if (data.token) {
-      setToken(data.token);
-    }
-
-    return data;
-  } catch (error) {
-    console.error('Sign up error:', error);
-    throw error;
-  }
-};
-
-export { useSession, signIn, signOut, signUp, getToken, getUserIdFromToken };
+export { signIn, signOut, signUp };

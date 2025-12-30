@@ -25,7 +25,7 @@ const SignupPage = () => {
     setError('');
 
     try {
-      await signUp(email, password, name);
+      await signUp({ email, password, name });
       router.push('/login');
     } catch (err) {
       setError('An error occurred during sign up. Please try again.');

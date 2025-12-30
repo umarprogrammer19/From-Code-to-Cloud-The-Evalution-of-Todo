@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const { data: session, isPending } = useSession();
+  const { data: session, isLoading: isPending } = useSession();
   const pathname = usePathname();
 
   // If still checking session, show loading state or nothing

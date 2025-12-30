@@ -26,7 +26,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      await signIn(email, password);
+      await signIn({ email, password });
       router.push(redirect);
       router.refresh(); // Refresh to update the session context
     } catch (err) {

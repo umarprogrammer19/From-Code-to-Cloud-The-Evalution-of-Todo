@@ -14,7 +14,6 @@ export const useTodosQuery = () => {
     queryKey: ['todos'],
     queryFn: getTodos,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    cacheTime: 10 * 60 * 1000, // 10 minutes
   });
 };
 
@@ -23,7 +22,6 @@ export const useTodoStatsQuery = () => {
     queryKey: ['todo-stats'],
     queryFn: getTodoStats,
     staleTime: 30 * 1000, // 30 seconds
-    cacheTime: 60 * 1000, // 1 minute
   });
 };
 

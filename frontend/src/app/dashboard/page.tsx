@@ -1,16 +1,14 @@
 'use client';
 
-import React from 'react';
-import { useSession } from '@/lib/auth-client';
-import { redirect } from 'next/navigation';
-import ProtectedRoute from '@/components/auth/ProtectedRoute';
-import Layout from '@/components/ui/Layout';
-import TodoStats from '@/components/todos/TodoStats';
 import AddTodoForm from '@/components/todos/AddTodoForm';
 import TodoList from '@/components/todos/TodoList';
+import TodoStats from '@/components/todos/TodoStats';
+import Layout from '@/components/ui/Layout';
+import { useSession } from '@/lib/auth-client';
+import { redirect } from 'next/navigation';
 
 const DashboardPage = () => {
-  const { data: session, isPending } = useSession();
+  const { data: session, isLoading: isPending } = useSession();
 
   // If still loading the session, show nothing or a loading state
   if (isPending) {
@@ -24,7 +22,6 @@ const DashboardPage = () => {
   // If no session, redirect to login
   if (!session) {
     redirect('/login');
-    return null;
   }
 
   return (

@@ -1,19 +1,27 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { authClient } from '@/lib/auth-client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+// Create a single instance of QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Better Auth Provider component
+// Auth Provider component using React Query
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  // The auth client handles session management automatically
   return (
-    <authClient.Provider>
+    <QueryClientProvider client={queryClient}>
       {children}
-    </authClient.Provider>
+    </QueryClientProvider>
   );
 };
 
