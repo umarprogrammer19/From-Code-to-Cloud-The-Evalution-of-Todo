@@ -34,6 +34,14 @@ const signIn = async ({ email, password }: { email: string; password: string }) 
   }
 
   const data = await response.json();
+
+  // Store the token in localStorage if it exists in the response
+  if (data.token) {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('auth_token', data.token);
+    }
+  }
+
   return data;
 };
 
@@ -73,7 +81,22 @@ const signOut = async () => {
   }
 };
 
-// Custom useSession hook that follows React Query patterns
+// Decode JWT token to get user info
+const decodeToken = (token: string) => {
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      throw new Error('Invalid token format');
+    }
+    const payload = JSON.parse(atob(parts[1]));
+    return payload;
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
+  }
+};
+
+// Custom useSession hook that only checks localStorage for the JWT token
 export const useSession = () => {
   return useQuery({
     queryKey: ['session'],
@@ -81,33 +104,40 @@ export const useSession = () => {
       // Check if we have a token in localStorage
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('auth_token');
+        console.log(token);
+
         if (!token) {
           return null;
         }
-      }
 
-      // Fetch session data from the backend
-      const response = await fetch('/api/auth/session', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
-        },
-      });
+        // Decode the token to get user info and check expiration
+        const decoded = decodeToken(token);
+        console.log(decoded);
 
-      if (!response.ok) {
-        // If the token is invalid or expired, return null
-        if (typeof window !== 'undefined') {
+        if (!decoded || !decoded.exp || decoded.exp < Date.now() / 1000) {
+          // Token is expired or invalid, remove it
           localStorage.removeItem('auth_token');
-        }
           return null;
+        }
+
+        // Return a session-like object based on the token
+        return {
+          user: {
+            id: decoded.userId || decoded.sub || decoded.id,
+            email: decoded.email,
+            name: decoded.name,
+          },
+          expiresAt: new Date(decoded.exp * 1000).toISOString(),
+        };
       }
 
-      const sessionData = await response.json();
-      return sessionData;
+      return null;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
-    // This ensures the query is only run when the component is mounted
-    enabled: typeof window !== 'undefined' && !!localStorage.getItem('auth_token'),
+    // Refetch the session when the page is focused (tab switch, window focus)
+    refetchOnWindowFocus: true,
+    enabled: typeof window !== 'undefined',
   });
 };
 

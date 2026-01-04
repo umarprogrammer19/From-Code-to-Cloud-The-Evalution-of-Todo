@@ -5,11 +5,11 @@ import TodoList from '@/components/todos/TodoList';
 import TodoStats from '@/components/todos/TodoStats';
 import Layout from '@/components/ui/Layout';
 import { useSession } from '@/lib/auth-client';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 const DashboardPage = () => {
   const { data: session, isLoading: isPending } = useSession();
-
+  const router = useRouter();
   // If still loading the session, show nothing or a loading state
   if (isPending) {
     return (
@@ -21,7 +21,8 @@ const DashboardPage = () => {
 
   // If no session, redirect to login
   if (!session) {
-    redirect('/login');
+    router.push('/login');
+    return null; // Return null to prevent rendering
   }
 
   return (

@@ -1,34 +1,26 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useSession, signIn } from '@/lib/auth-client';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/Button';
+import { signIn } from '@/lib/auth-client';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/dashboard';
-
-  const { data: session } = useSession();
-
-  // If already logged in, redirect to dashboard
-  if (session) {
-    router.push('/dashboard');
-    return null;
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     try {
-      await signIn({ email, password });
-      router.push(redirect);
-      router.refresh(); // Refresh to update the session context
+      // Sign in using better-auth - this will handle the redirect to callbackURL
+      const result = await signIn({ email, password });
+      console.log(result);
+      if (typeof window !== undefined)
+        window.location.href = "/dashboard";
     } catch (err) {
       setError('Invalid email or password. Please try again.');
       console.error('Login error:', err);
