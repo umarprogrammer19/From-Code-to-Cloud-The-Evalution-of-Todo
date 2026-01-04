@@ -20,7 +20,7 @@ interface SessionData {
 
 // Sign in function
 const signIn = async ({ email, password }: { email: string; password: string }) => {
-  const response = await fetch('/api/auth/signin', {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:8000'}/api/auth/signin`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,9 +36,9 @@ const signIn = async ({ email, password }: { email: string; password: string }) 
   const data = await response.json();
 
   // Store the token in localStorage if it exists in the response
-  if (data.token) {
+  if (data.access_token) {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', data.token);
+      localStorage.setItem('auth_token', data.access_token);
     }
   }
 
@@ -47,7 +47,7 @@ const signIn = async ({ email, password }: { email: string; password: string }) 
 
 // Sign up function
 const signUp = async ({ email, password, name }: { email: string; password: string; name?: string }) => {
-  const response = await fetch('/api/auth/signup', {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_API_URL || 'http://localhost:8000'}/api/auth/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -61,6 +61,14 @@ const signUp = async ({ email, password, name }: { email: string; password: stri
   }
 
   const data = await response.json();
+
+  // Store the token in localStorage if it exists in the response
+  if (data.access_token) {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('auth_token', data.access_token);
+    }
+  }
+
   return data;
 };
 

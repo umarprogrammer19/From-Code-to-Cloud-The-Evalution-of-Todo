@@ -1,0 +1,84 @@
+from datetime import timedelta
+from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from sqlmodel import Session, select
+from typing import Optional
+from ...models.user import User
+from ...services.auth import create_access_token
+from ...api.deps import get_db_session
+from pydantic import BaseModel
+
+router = APIRouter()
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class SignInRequest(BaseModel):
+    email: str
+    password: str
+
+class SignUpRequest(BaseModel):
+    email: str
+    password: str
+    name: Optional[str] = None
+
+@router.post("/signin", response_model=Token)
+def signin(
+    signin_data: SignInRequest,
+    db_session: Session = Depends(get_db_session)
+):
+    """
+    Authenticate user and return JWT token.
+    """
+    # Find user by email
+    statement = select(User).where(User.email == signin_data.email)
+    user = db_session.exec(statement).first()
+
+    if not user or not user.verify_password(signin_data.password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    # Create access token
+    access_token = create_access_token(
+        data={"user_id": user.id}
+    )
+
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.post("/signup", response_model=Token)
+def signup(
+    signup_data: SignUpRequest,
+    db_session: Session = Depends(get_db_session)
+):
+    """
+    Create a new user and return JWT token.
+    """
+    # Check if user already exists
+    statement = select(User).where(User.email == signup_data.email)
+    existing_user = db_session.exec(statement).first()
+
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User with this email already exists"
+        )
+
+    # Create new user
+    user = User(email=signup_data.email, name=signup_data.name)
+    user.set_password(signup_data.password)
+
+    db_session.add(user)
+    db_session.commit()
+    db_session.refresh(user)
+
+    # Create access token
+    access_token = create_access_token(
+        data={"user_id": user.id}
+    )
+
+    return {"access_token": access_token, "token_type": "bearer"}

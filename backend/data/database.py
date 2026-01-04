@@ -33,6 +33,7 @@ def init_db():
     Initialize the database by creating all tables.
     This should be called when the application starts.
     """
+    from src.models import User, Task  # Import all models to register them
     from src.models.base import SQLModel
     SQLModel.metadata.create_all(engine)
 
