@@ -131,7 +131,7 @@ export const useSession = () => {
         // Return a session-like object based on the token
         return {
           user: {
-            id: decoded.userId || decoded.sub || decoded.id,
+            id: decoded.user_id || decoded.userId || decoded.sub || decoded.id,
             email: decoded.email,
             name: decoded.name,
           },

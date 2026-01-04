@@ -10,9 +10,15 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+class UserResponse(BaseModel):
+    id: int
+    email: str
+    name: Optional[str] = None
+
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    user: UserResponse
 
 class SignInRequest(BaseModel):
     email: str
@@ -42,12 +48,16 @@ def signin(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Create access token
+    # Create access token with user details
     access_token = create_access_token(
-        data={"user_id": user.id}
+        data={"user_id": user.id, "name": user.name, "email": user.email}
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": UserResponse(id=user.id, email=user.email, name=user.name)
+    }
 
 
 @router.post("/signup", response_model=Token)
@@ -76,9 +86,13 @@ def signup(
     db_session.commit()
     db_session.refresh(user)
 
-    # Create access token
+    # Create access token with user details
     access_token = create_access_token(
-        data={"user_id": user.id}
+        data={"user_id": user.id, "name": user.name, "email": user.email}
     )
 
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": UserResponse(id=user.id, email=user.email, name=user.name)
+    }
