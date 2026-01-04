@@ -6,7 +6,7 @@ export const formatDate = (dateString: string | Date | undefined | null): string
 
   if (dateString instanceof Date) {
     date = dateString;
-  } else {
+  } else if (typeof dateString === 'string') {
     // Try to parse the date string
     date = new Date(dateString);
 
@@ -21,6 +21,9 @@ export const formatDate = (dateString: string | Date | undefined | null): string
         return 'N/A';
       }
     }
+  } else {
+    // If it's not a string or Date object, return 'N/A'
+    return 'N/A';
   }
 
   // Format the date in a readable format

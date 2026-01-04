@@ -42,7 +42,7 @@ export const useUpdateTodoMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: Partial<Todo> }) => updateTodo(id, data),
+    mutationFn: ({ id, data }: { id: number; data: Partial<Todo> }) => updateTodo(id, data),
     onSuccess: () => {
       // Invalidate and refetch todos
       queryClient.invalidateQueries({ queryKey: ['todos'] });
@@ -55,7 +55,7 @@ export const useToggleTodoCompletionMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, completed }: { id: string; completed: boolean }) => toggleTodoCompletion(id, completed),
+    mutationFn: ({ id, completed }: { id: number; completed: boolean }) => toggleTodoCompletion(id, completed),
     onMutate: async ({ id, completed }) => {
       // Cancel outgoing refetches to avoid overwriting optimistic updates
       await queryClient.cancelQueries({ queryKey: ['todos'] });
@@ -92,7 +92,7 @@ export const useDeleteTodoMutation = () => {
 
   return useMutation({
     mutationFn: deleteTodo,
-    onMutate: async (id) => {
+    onMutate: async (id: number) => {
       // Cancel outgoing refetches to avoid overwriting optimistic updates
       await queryClient.cancelQueries({ queryKey: ['todos'] });
 

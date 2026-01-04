@@ -1,15 +1,15 @@
 export interface Todo {
-  id: string;
+  id: number; // Backend uses integer IDs
   title: string;
   description?: string;
   completed: boolean;
   createdAt: string | Date;
   updatedAt: string | Date;
-  userId: string;
+  userId: number; // Backend uses integer user IDs
 }
 
 export interface User {
-  id: string;
+  id: number; // Backend uses integer IDs
   email: string;
   name?: string;
   createdAt: string | Date;

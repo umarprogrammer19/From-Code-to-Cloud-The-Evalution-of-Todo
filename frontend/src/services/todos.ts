@@ -26,14 +26,14 @@ export const updateTodo = async (id: string, todoData: Partial<Todo>): Promise<T
 };
 
 // Toggle task completion status
-export const toggleTodoCompletion = async (id: string, completed: boolean): Promise<Todo> => {
+export const toggleTodoCompletion = async (id: number, completed: boolean): Promise<Todo> => {
   // Update the task with the completion status
   const endpoint = `/api/tasks/${id}`;
   return await apiPut<Todo>(endpoint, { completed });
 };
 
 // Delete a task
-export const deleteTodo = async (id: string): Promise<void> => {
+export const deleteTodo = async (id: number): Promise<void> => {
   const endpoint = `/api/tasks/${id}`;
   await apiDelete(endpoint);
 };

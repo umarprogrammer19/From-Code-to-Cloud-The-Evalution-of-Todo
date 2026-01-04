@@ -41,5 +41,5 @@ class TaskResponse(BaseModel):
     completed: bool
     priority: PriorityLevel
     user_id: int
-    created_at: Optional[datetime] = None
-    updated_at: Optional[datetime] = None
+    created_at: datetime
+    updated_at: datetime
