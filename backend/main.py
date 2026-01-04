@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from src.api.v1.tasks import router as tasks_router
+from src.api.v1.tasks_simple import router as tasks_simple_router
 from src.api.v1.auth import router as auth_router
 from src.config.settings import settings
 from contextlib import asynccontextmanager
@@ -37,6 +38,8 @@ app.add_middleware(
 
 # Include API routes - the user_id path parameter will be part of the route
 app.include_router(tasks_router, prefix="/api/{user_id}/tasks", tags=["tasks"])
+# Include simple API routes that extract user_id from JWT token
+app.include_router(tasks_simple_router, prefix="/api", tags=["tasks-simple"])
 # Include auth routes for authentication
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 

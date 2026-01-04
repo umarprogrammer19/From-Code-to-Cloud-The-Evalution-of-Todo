@@ -5,7 +5,7 @@ import { getCurrentUserId } from './auth';
 // Get all tasks for the current user
 export const getTodos = async (): Promise<Todo[]> => {
   const userId = getCurrentUserId();
-  const endpoint = `/api/${userId}/tasks`;
+  const endpoint = `/api/${userId}tasks`;
   return await apiGet<Todo[]>(endpoint);
 };
 
@@ -19,7 +19,7 @@ export const getTodoById = async (id: string): Promise<Todo> => {
 // Create a new task
 export const createTodo = async (todoData: Omit<Todo, 'id' | 'createdAt' | 'updatedAt' | 'userId'>): Promise<Todo> => {
   const userId = getCurrentUserId();
-  const endpoint = `/api/${userId}/tasks`;
+  const endpoint = `/api/${userId}tasks`;
   return await apiPost<Todo>(endpoint, todoData);
 };
 
@@ -34,14 +34,14 @@ export const updateTodo = async (id: string, todoData: Partial<Todo>): Promise<T
 export const toggleTodoCompletion = async (id: string, completed: boolean): Promise<Todo> => {
   // Update the task with the completion status
   const userId = getCurrentUserId();
-  const endpoint = `/api/${userId}/tasks/${id}`;
+  const endpoint = `/api/${userId}tasks/${id}`;
   return await apiPut<Todo>(endpoint, { completed });
 };
 
 // Delete a task
 export const deleteTodo = async (id: string): Promise<void> => {
   const userId = getCurrentUserId();
-  const endpoint = `/api/${userId}/tasks/${id}`;
+  const endpoint = `/api/${userId}tasks/${id}`;
   await apiDelete(endpoint);
 };
 

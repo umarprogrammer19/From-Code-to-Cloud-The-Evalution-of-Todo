@@ -50,7 +50,12 @@ async def get_current_user(token: HTTPAuthorizationCredentials = Depends(securit
 
         # Try to get user_id from different possible fields
         # Better Auth typically uses 'sub' (subject) or 'userId' field for user ID
-        user_id_value = payload.get("user_id") or payload.get("userId") or payload.get("sub") or payload.get("id")
+        user_id_value = (
+            payload.get("user_id")
+            or payload.get("userId")
+            or payload.get("sub")
+            or payload.get("id")
+        )
 
         # Convert to int if it's not already
         if user_id_value is not None:
@@ -71,9 +76,9 @@ async def get_current_user(token: HTTPAuthorizationCredentials = Depends(securit
 
 from fastapi import Request
 
+
 async def verify_user_id_in_token(
-    request: Request,
-    current_user_id: int = Depends(get_current_user)
+    request: Request, current_user_id: int = Depends(get_current_user)
 ):
     """
     Verify that the user_id in the path matches the user_id in the JWT token.
@@ -81,12 +86,11 @@ async def verify_user_id_in_token(
     """
     # Extract user_id from the path using FastAPI's request object
     path_params = request.path_params
-    path_user_id_str = path_params.get('user_id')
+    path_user_id_str = path_params.get("user_id")
 
     if path_user_id_str is None:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="User ID not found in path"
+            status_code=status.HTTP_400_BAD_REQUEST, detail="User ID not found in path"
         )
 
     # Convert both to integers for comparison since user IDs can come as strings from paths
@@ -95,12 +99,12 @@ async def verify_user_id_in_token(
     except (ValueError, TypeError):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid user ID format in path"
+            detail="Invalid user ID format in path",
         )
 
     if path_user_id != current_user_id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="User ID in token does not match user ID in path"
+            detail="User ID in token does not match user ID in path",
         )
     return current_user_id
