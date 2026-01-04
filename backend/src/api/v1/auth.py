@@ -48,15 +48,16 @@ def signin(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    # Create access token with user details
+    # Create access token with user details - ensure name is available
+    user_name = user.name or user.email.split('@')[0]
     access_token = create_access_token(
-        data={"user_id": user.id, "name": user.name, "email": user.email}
+        data={"user_id": user.id, "name": user_name, "email": user.email}
     )
 
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user": UserResponse(id=user.id, email=user.email, name=user.name)
+        "user": UserResponse(id=user.id, email=user.email, name=user_name)
     }
 
 
@@ -78,21 +79,23 @@ def signup(
             detail="User with this email already exists"
         )
 
-    # Create new user
-    user = User(email=signup_data.email, name=signup_data.name)
+    # Create new user - use email prefix as name if no name provided
+    name = signup_data.name or signup_data.email.split('@')[0]
+    user = User(email=signup_data.email, name=name)
     user.set_password(signup_data.password)
 
     db_session.add(user)
     db_session.commit()
     db_session.refresh(user)
 
-    # Create access token with user details
+    # Create access token with user details - ensure name is available
+    user_name = user.name or user.email.split('@')[0]
     access_token = create_access_token(
-        data={"user_id": user.id, "name": user.name, "email": user.email}
+        data={"user_id": user.id, "name": user_name, "email": user.email}
     )
 
     return {
         "access_token": access_token,
         "token_type": "bearer",
-        "user": UserResponse(id=user.id, email=user.email, name=user.name)
+        "user": UserResponse(id=user.id, email=user.email, name=user_name)
     }

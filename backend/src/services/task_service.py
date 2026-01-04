@@ -19,13 +19,16 @@ class TaskService:
         """
         Create a new task for the specified user.
         """
+        from datetime import datetime, timezone
         logger.info(f"Creating task for user {user_id} with priority: {task_in.priority or 'medium'}")
         task = Task(
             title=task_in.title,
             description=task_in.description,
             completed=task_in.completed,
             priority=task_in.priority if task_in.priority else PriorityLevel.medium,
-            user_id=user_id
+            user_id=user_id,
+            created_at=datetime.now(timezone.utc),
+            updated_at=datetime.now(timezone.utc)
         )
         session.add(task)
         session.commit()
@@ -66,6 +69,7 @@ class TaskService:
         """
         Update an existing task for the specified user.
         """
+        from datetime import datetime, timezone
         task = session.get(Task, task_id)
         if not task:
             return None
@@ -79,6 +83,9 @@ class TaskService:
         update_data = task_in.dict(exclude_unset=True)
         for field, value in update_data.items():
             setattr(task, field, value)
+
+        # Update the updated_at timestamp
+        task.updated_at = datetime.now(timezone.utc)
 
         session.add(task)
         session.commit()

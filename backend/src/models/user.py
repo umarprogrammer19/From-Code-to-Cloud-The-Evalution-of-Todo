@@ -12,7 +12,7 @@ pwd_context = CryptContext(
 
 class UserBase(SQLModel):
     email: str = Field(unique=True, index=True)
-    name: Optional[str] = Field(default=None)
+    name: Optional[str] = Field(default=None, nullable=True)
 
 
 class User(UserBase, table=True):
