@@ -61,6 +61,17 @@ def signin(
     }
 
 
+@router.post("/signout")
+def signout():
+    """
+    Sign out user by clearing their token.
+    """
+    # In a stateless JWT system, we can't actually "revoke" the token server-side
+    # The client should handle removing the token from local storage
+    # We return a success response to indicate the signout process is complete
+    return {"message": "Successfully signed out"}
+
+
 @router.post("/signup", response_model=Token)
 def signup(
     signup_data: SignUpRequest,

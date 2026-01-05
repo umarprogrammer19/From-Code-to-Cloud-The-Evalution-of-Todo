@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from pydantic import ConfigDict
 from typing import Optional
 from datetime import datetime
 from enum import Enum
@@ -41,5 +42,12 @@ class TaskResponse(BaseModel):
     completed: bool
     priority: PriorityLevel
     user_id: int
-    created_at: datetime
-    updated_at: datetime
+    created_at: datetime = Field(alias="createdAt", serialization_alias="createdAt")
+    updated_at: datetime = Field(alias="updatedAt", serialization_alias="updatedAt")
+
+    model_config = ConfigDict(
+        populate_by_name=True,
+        json_encoders={
+            datetime: lambda v: v.isoformat()
+        }
+    )

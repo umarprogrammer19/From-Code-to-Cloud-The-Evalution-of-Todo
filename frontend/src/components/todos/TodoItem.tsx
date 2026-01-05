@@ -11,6 +11,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(todo.title);
   const [editDescription, setEditDescription] = useState(todo.description || '');
+  const [editPriority, setEditPriority] = useState<'low' | 'medium' | 'high' | 'urgent'>(todo.priority);
   const toggleMutation = useToggleTodoCompletionMutation();
   const deleteMutation = useDeleteTodoMutation();
   const updateMutation = useUpdateTodoMutation();
@@ -30,6 +31,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     setIsEditing(true);
     setEditTitle(todo.title);
     setEditDescription(todo.description || '');
+    setEditPriority(todo.priority);
   };
 
   const handleSave = () => {
@@ -37,7 +39,8 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       id: todo.id,
       data: {
         title: editTitle,
-        description: editDescription
+        description: editDescription,
+        priority: editPriority
       }
     });
     setIsEditing(false);
@@ -47,6 +50,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
     setIsEditing(false);
     setEditTitle(todo.title);
     setEditDescription(todo.description || '');
+    setEditPriority(todo.priority);
   };
 
   if (isEditing) {
@@ -65,6 +69,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           className="mb-2 p-2 border rounded text-sm"
           placeholder="Task description"
         />
+        <select
+          value={editPriority}
+          onChange={(e) => setEditPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
+          className="mb-2 p-2 border rounded"
+        >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="urgent">Urgent</option>
+        </select>
         <div className="flex space-x-2">
           <button
             onClick={handleSave}
@@ -83,6 +97,17 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
       </div>
     );
   }
+
+  // Determine priority color
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'low': return 'text-green-600';
+      case 'medium': return 'text-yellow-600';
+      case 'high': return 'text-orange-600';
+      case 'urgent': return 'text-red-600';
+      default: return 'text-gray-600';
+    }
+  };
 
   return (
     <div className={`flex items-center justify-between p-4 border rounded-lg mb-2 ${todo.completed ? 'bg-green-50' : 'bg-white'}`}>
@@ -105,7 +130,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           )}
         </div>
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center space-x-3">
+        <span className={`text-sm font-medium ${getPriorityColor(todo.priority)}`}>
+          {todo.priority.charAt(0).toUpperCase() + todo.priority.slice(1)}
+        </span>
         <span className="text-xs text-gray-500">
           {formatDate(todo.updatedAt)}
         </span>

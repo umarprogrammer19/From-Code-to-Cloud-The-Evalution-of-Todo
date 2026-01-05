@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 const AddTodoForm: React.FC = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high' | 'urgent'>('medium');
 
   const createMutation = useCreateTodoMutation();
 
@@ -16,12 +17,14 @@ const AddTodoForm: React.FC = () => {
     createMutation.mutate({
       title: title.trim(),
       description: description.trim() || undefined,
-      completed: false
+      completed: false,
+      priority
     });
 
     // Reset form
     setTitle('');
     setDescription('');
+    setPriority('medium');
   };
 
   return (
@@ -45,6 +48,20 @@ const AddTodoForm: React.FC = () => {
           rows={2}
           disabled={createMutation.isPending}
         />
+      </div>
+      <div className="mb-3">
+        <label className="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value as 'low' | 'medium' | 'high' | 'urgent')}
+          className="w-full p-2 border rounded"
+          disabled={createMutation.isPending}
+        >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+          <option value="urgent">Urgent</option>
+        </select>
       </div>
       <Button
         type="submit"

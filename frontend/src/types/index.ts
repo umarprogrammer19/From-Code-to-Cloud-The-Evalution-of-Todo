@@ -3,6 +3,7 @@ export interface Todo {
   title: string;
   description?: string;
   completed: boolean;
+  priority: 'low' | 'medium' | 'high' | 'urgent';
   createdAt: string | Date;
   updatedAt: string | Date;
   userId: number; // Backend uses integer user IDs

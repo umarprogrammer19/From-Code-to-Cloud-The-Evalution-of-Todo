@@ -26,12 +26,15 @@ export const formatDate = (dateString: string | Date | undefined | null): string
     return 'N/A';
   }
 
-  // Format the date in a readable format
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
+  // For SSR compatibility, use a consistent format that works on both server and client
+  // toLocaleDateString can behave differently on server vs client due to locale/timezone
+  // So we'll create a consistent string format
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const year = date.getFullYear();
+  const month = months[date.getMonth()];
+  const day = date.getDate().toString().padStart(2, '0');
+  const hours = date.getHours().toString().padStart(2, '0');
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+
+  return `${month} ${day}, ${year} at ${hours}:${minutes}`;
 };
