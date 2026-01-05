@@ -1,18 +1,14 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import Providers from "@/lib/tanstack-query-client"
-
-const _geist = Geist({ subsets: ["latin"] })
-const _geistMono = Geist_Mono({ subsets: ["latin"] })
+import { Analytics } from "@vercel/analytics/next"
+import type { Metadata } from "next"
+import type React from "react"
+import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "v0 App",
-  description: "Created with v0",
-  generator: "v0.app",
+  title: "Task Management",
+  description: "Created with Claude Code",
+  generator: "Claude Code",
   icons: {
     icon: [
       {
