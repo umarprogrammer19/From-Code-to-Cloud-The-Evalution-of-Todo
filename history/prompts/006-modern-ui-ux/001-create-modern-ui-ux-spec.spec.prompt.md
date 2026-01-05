@@ -7,7 +7,7 @@ surface: agent
 model: claude-sonnet-4-5-20250929
 feature: modern-ui-ux
 branch: 006-modern-ui-ux
-user: Claude Code
+user: Umar Farooq
 command: sp.specify
 labels: [ui,ux,spec,frontend]
 links:
