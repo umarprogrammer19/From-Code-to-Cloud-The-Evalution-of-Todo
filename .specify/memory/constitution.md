@@ -1,14 +1,13 @@
 <!-- SYNC IMPACT REPORT:
-Version change: 1.1.0 -> 2.0.0
-Modified principles: I. Project Scope (Interactive TUI) -> I. Project Scope (Full-Stack Monorepo), II. Tech Stack Standards (Enhanced) -> II. Tech Stack Standards (Full-Stack), III. Architecture (Non-Negotiable) -> III. Architecture (Full-Stack Non-Negotiable), IV. Test-First Approach -> IV. Test-First Approach (Full-Stack), V. Data Management -> V. Data Management (Database-Driven), VI. Code Quality Standards -> VI. Code Quality Standards (Full-Stack)
-Added sections: VII. Authentication Rules, VIII. API Standards
-Removed sections: UX Standards
+Version change: 2.0.0 -> 2.1.0
+Modified principles: II. Tech Stack Standards (Full-Stack) -> II. Tech Stack Standards (Full-Stack), added Frontend Design System section
+Added sections: IX. Frontend Design System (Strict)
 Templates requiring updates:
   - .specify/templates/plan-template.md ⚠ pending
   - .specify/templates/spec-template.md ⚠ pending
   - .specify/templates/tasks-template.md ⚠ pending
   - .specify/templates/commands/*.md ⚠ pending
-Follow-up TODOs: Verify all dependent templates are updated for Phase 2
+Follow-up TODOs: Verify all dependent templates are updated for frontend design system rules
 -->
 # Todo App Constitution
 
@@ -19,6 +18,9 @@ Follow-up TODOs: Verify all dependent templates are updated for Phase 2
 
 ### II. Tech Stack Standards (Full-Stack)
 **Backend**: Python 3.13+, FastAPI, Uvicorn, SQLModel; Managed by `uv`; **Database**: Neon Serverless PostgreSQL; **Frontend**: Next.js 16+, TypeScript, Tailwind CSS; **Auth**: Better Auth (Frontend) + JWT Verification (Backend); **Package Management**: STRICTLY use `uv add` for backend dependencies and `npm`/`yarn` for frontend
+
+### IX. Frontend Design System (Strict)
+**Design System**: STRICTLY use **Shadcn/UI** (based on Radix UI) for all interactive components (Dialogs, Dropdowns, Inputs); **Styling**: Use **Tailwind CSS** with a consistent color variable theme (CSS Variables); **Icons**: Use **Lucide React** for all icons; **UX Standards**: Every action (Add, Delete, Save) MUST show a **Toast Notification** (Success/Error); Use **Skeleton Loaders** instead of simple spinners for data fetching; The app MUST be fully functional on Mobile and Desktop; Use `framer-motion` for subtle entry animations (lists fading in)
 
 ### III. Architecture (Full-Stack Non-Negotiable)
 frontend/: Next.js 16+ with App Router for UI components and routing; backend/: FastAPI + SQLModel for API endpoints and data models; specs/: Centralized feature specifications; data/: Database schema definitions and migrations; Strict separation of concerns between frontend, backend, and shared logic; **Dependency Management**: Use `uv` for Python dependencies, npm/yarn for JavaScript/TypeScript
@@ -63,4 +65,4 @@ All endpoints: `/api/{user_id}/...`; Backend runs on Port `8000`; Frontend runs 
 
 All implementations must comply with this constitution; Architecture violations must be corrected; Dependencies must be added via `uv` for Python and npm/yarn for JS/TS; Database operations must use SQLModel with proper user isolation; Changes to architecture require constitution amendments; Authentication must follow JWT-only approach without sessions
 
-**Version**: 2.0.0 | **Ratified**: 2025-12-12 | **Last Amended**: 2025-12-13
+**Version**: 2.1.0 | **Ratified**: 2025-12-12 | **Last Amended**: 2026-01-05
