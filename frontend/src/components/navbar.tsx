@@ -4,8 +4,10 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { CheckCircle2 } from "lucide-react"
+import { useSession } from "@/lib/auth-client"
 
 export function Navbar() {
+    const { data: session } = useSession();
     return (
         <motion.header
             initial={{ y: -20, opacity: 0 }}
@@ -40,12 +42,15 @@ export function Navbar() {
                     </Link>
                 </nav>
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="sm" asChild>
-                        <Link href="/login">Log in</Link>
-                    </Button>
-                    <Button size="sm" asChild className="rounded-full px-6">
-                        <Link href="/dashboard">Get Started</Link>
-                    </Button>
+                    {session ? (
+                        <Button asChild>
+                            <Link href="/dashboard">Dashboard</Link>
+                        </Button>
+                    ) : (
+                        <Button asChild>
+                            <Link href="/login">Login</Link>
+                        </Button>
+                    )}
                 </div>
             </div>
         </motion.header>
