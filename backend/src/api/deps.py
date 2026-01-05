@@ -1,7 +1,7 @@
 from typing import Generator
 from fastapi import Depends, HTTPException, status
 from sqlmodel import Session
-from ...data.database import get_session
+from data.database import get_session  # Absolute import from backend root
 from ..services.auth import get_current_user, verify_user_id_in_token
 
 
