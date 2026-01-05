@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useCreateTodoMutation } from '@/hooks/useTodos';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const AddTodoForm: React.FC = () => {
   const [title, setTitle] = useState('');

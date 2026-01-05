@@ -1,3 +1,22 @@
+// Task entity - Updated to match our UI requirements
+export interface Task {
+  id: string;
+  title: string;
+  description?: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  createdAt: Date;
+  updatedAt: Date;
+  dueDate?: Date;
+}
+
+// Filter type
+export type FilterType = 'all' | 'active' | 'completed';
+
+// Sort type
+export type SortType = 'date' | 'priority' | 'title';
+
+// User entity - keeping original structure
 export interface Todo {
   id: number; // Backend uses integer IDs
   title: string;

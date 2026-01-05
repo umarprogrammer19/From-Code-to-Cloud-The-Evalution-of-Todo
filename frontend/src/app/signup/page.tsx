@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useSession, signUp } from '@/lib/auth-client';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 
 const SignupPage = () => {
   const [email, setEmail] = useState('');
