@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { createAuthClient } from 'better-auth/react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 // Create better-auth client
 export const authClient = createAuthClient({
