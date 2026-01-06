@@ -6,67 +6,135 @@ import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { CheckCircle2 } from "lucide-react"
+import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Icons } from "@/components/icons"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
 
-const LoginForm = () => {
+
+export function LoginForm() {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+    setIsLoading(true)
 
     try {
       // Sign in using better-auth - this will handle the redirect to callbackURL
       const result = await signIn({ email, password })
-      console.log(result)
       if (typeof window !== undefined) window.location.href = "/dashboard"
     } catch (err) {
       setError("Invalid email or password. Please try again.")
       console.error("Login error:", err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      {error && <div className="text-red-500 text-center">{error}</div>}
-      <div className="rounded-md shadow-sm -space-y-px">
-        <div>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Email address"
-          />
-        </div>
-        <div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Password"
-          />
-        </div>
-      </div>
-
-      <div>
-        <Button
-          type="submit"
-          className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Sign in
-        </Button>
-      </div>
-    </form>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.1 }}
+    >
+      <Card className="border-border/40 shadow-2xl backdrop-blur-sm bg-background/80">
+        <CardHeader className="space-y-1.5 pb-6">
+          <CardTitle className="text-2xl font-bold text-center">Welcome back</CardTitle>
+          <CardDescription className="text-center">Log in to your account to continue your flow</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-5">
+          <div className="grid grid-cols-2 gap-6">
+            <Button variant="outline" className="gap-2 bg-transparent">
+              <Icons.gitHub className="h-4 w-4" />
+              Github
+            </Button>
+            <Button variant="outline" className="gap-2 bg-transparent">
+              <Icons.google className="h-4 w-4" />
+              Google
+            </Button>
+          </div>
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+            </div>
+          </div>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium border border-destructive/20 text-center"
+              >
+                {error}
+              </motion.div>
+            )}
+            <div className="space-y-2.5">
+              <Label htmlFor="email">Email address</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-11 focus-visible:ring-primary/20"
+              />
+            </div>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password">Password</Label>
+                <Link href="#" className="text-sm text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
+              <Input
+                id="password"
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="h-11 focus-visible:ring-primary/20"
+              />
+            </div>
+            <Button
+              className="w-full h-11 text-base font-semibold transition-all hover:-translate-y-px active:translate-y-0"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  Sign In
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </>
+              )}
+            </Button>
+          </form>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-4">
+          <div className="text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{" "}
+            <Link href="/signup" className="text-primary hover:underline">
+              Sign up
+            </Link>
+          </div>
+        </CardFooter>
+      </Card>
+    </motion.div>
   )
 }
+
 
 export default function LoginPage() {
   return (

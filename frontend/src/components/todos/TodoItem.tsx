@@ -61,18 +61,18 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }) => {
           <Input
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
-            className="font-medium h-10 border-none bg-background focus-visible:ring-1"
+            className="font-medium h-10 border bg-background focus-visible:ring-2 focus-visible:ring-ring"
             placeholder="Task title"
           />
           <Textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
-            className="text-sm min-h-20 border-none bg-background focus-visible:ring-1 resize-none"
+            className="text-sm min-h-20 border bg-background focus-visible:ring-2 focus-visible:ring-ring resize-none"
             placeholder="Task description"
           />
           <div className="flex items-center justify-between gap-4">
             <Select value={editPriority} onValueChange={(v) => setEditPriority(v as any)}>
-              <SelectTrigger className="w-35 h-9 border-none bg-background">
+              <SelectTrigger className="w-35 h-9 border bg-background">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

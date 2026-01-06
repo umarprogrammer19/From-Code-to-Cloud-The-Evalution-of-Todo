@@ -6,8 +6,25 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
+import { useSession } from "@/lib/auth-client"
 
 export default function SettingsPage() {
+    const { data: session, isLoading } = useSession();
+
+    if (isLoading) {
+        return (
+            <div className="mx-auto max-w-4xl space-y-6">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+                    <p className="text-muted-foreground">Manage your account settings and preferences</p>
+                </div>
+                <div className="flex justify-center items-center h-64">
+                    <p>Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="mx-auto max-w-4xl space-y-6">
             <div>
@@ -25,11 +42,11 @@ export default function SettingsPage() {
                         <div className="grid gap-4 sm:grid-cols-2">
                             <div className="space-y-2">
                                 <Label htmlFor="name">Full Name</Label>
-                                <Input id="name" defaultValue="John Doe" />
+                                <Input id="name" defaultValue={session?.user?.name || ""} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="email">Email Address</Label>
-                                <Input id="email" defaultValue="john@example.com" />
+                                <Input id="email" defaultValue={session?.user?.email || ""} />
                             </div>
                         </div>
                         <Button>Save Changes</Button>

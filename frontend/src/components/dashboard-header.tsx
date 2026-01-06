@@ -17,7 +17,7 @@ export function DashboardHeader() {
                     <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                     <Input
                         placeholder="Search tasks, projects..."
-                        className="pl-9 bg-muted/50 border-none h-9 focus-visible:ring-1 focus-visible:ring-primary"
+                        className="pl-9 bg-muted/50 border h-9 focus-visible:ring-2 focus-visible:ring-ring"
                     />
                 </div>
             </div>

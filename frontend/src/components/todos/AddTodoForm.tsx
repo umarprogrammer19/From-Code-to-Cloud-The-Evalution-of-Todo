@@ -34,7 +34,7 @@ const AddTodoForm: React.FC = () => {
   }
 
   return (
-    <Card className="overflow-hidden border-none bg-muted/30">
+    <Card className="overflow-hidden border bg-muted/30">
       <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
@@ -42,7 +42,7 @@ const AddTodoForm: React.FC = () => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Task title..."
-              className="bg-background border-none focus-visible:ring-1"
+              className="bg-background border focus-visible:ring-2 focus-visible:ring-ring"
               disabled={createMutation.isPending}
             />
           </div>
@@ -51,14 +51,14 @@ const AddTodoForm: React.FC = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Description (optional)"
-              className="min-h-25 resize-none bg-background border-none focus-visible:ring-1"
+              className="min-h-25 resize-none bg-background border focus-visible:ring-2 focus-visible:ring-ring"
               disabled={createMutation.isPending}
             />
           </div>
           <div className="space-y-2">
             <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground/60">Priority</label>
             <Select value={priority} onValueChange={(v: "low" | "medium" | "high" | "urgent") => setPriority(v)} disabled={createMutation.isPending}>
-              <SelectTrigger className="bg-background border-none">
+              <SelectTrigger className="bg-background border">
                 <SelectValue placeholder="Select priority" />
               </SelectTrigger>
               <SelectContent>

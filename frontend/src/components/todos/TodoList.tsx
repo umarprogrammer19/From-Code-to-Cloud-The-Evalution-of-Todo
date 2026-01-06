@@ -49,7 +49,7 @@ const TodoList: React.FC = () => {
             placeholder="Search your tasks..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-9 bg-muted/30 border-none h-10 focus-visible:ring-1"
+            className="pl-9 bg-muted/30 border h-10 focus-visible:ring-2 focus-visible:ring-ring"
           />
         </div>
         <Tabs value={filter} onValueChange={(v: string) => setFilter(v as any)} className="w-auto">
