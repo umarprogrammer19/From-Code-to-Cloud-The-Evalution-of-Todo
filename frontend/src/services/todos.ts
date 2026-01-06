@@ -20,7 +20,7 @@ export const createTodo = async (todoData: Omit<Todo, 'id' | 'createdAt' | 'upda
 };
 
 // Update an existing task
-export const updateTodo = async (id: string, todoData: Partial<Todo>): Promise<Todo> => {
+export const updateTodo = async (id: number, todoData: Partial<Todo>): Promise<Todo> => {
   const endpoint = `/api/tasks/${id}`;
   return await apiPut<Todo>(endpoint, todoData);
 };
