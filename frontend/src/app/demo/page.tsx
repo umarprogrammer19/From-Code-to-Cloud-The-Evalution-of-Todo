@@ -3,7 +3,7 @@
 import { FilterDropdown } from '@/components/task/filter-dropdown';
 import { SortDropdown } from '@/components/task/sort-dropdown';
 import { TaskCard } from '@/components/task/task-card';
-import { Button } from '@/components/ui/Buttons';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';

@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/Buttons';
+import { Button } from '@/components/ui/button';
 import { ArrowUpDown } from 'lucide-react';
 
 type SortType = 'date' | 'priority' | 'title';
