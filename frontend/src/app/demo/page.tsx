@@ -10,9 +10,9 @@ import { useState } from 'react';
 
 // Mock task data for demonstration
 const mockTasks = [
-  { id: '1', title: 'Complete project proposal', completed: false, priority: 'high', createdAt: new Date() },
-  { id: '2', title: 'Schedule team meeting', completed: true, priority: 'medium', createdAt: new Date() },
-  { id: '3', title: 'Review documentation', completed: false, priority: 'low', createdAt: new Date() },
+  { id: '1', title: 'Complete project proposal', completed: false, priority: 'high' as const, createdAt: new Date() },
+  { id: '2', title: 'Schedule team meeting', completed: true, priority: 'medium' as const, createdAt: new Date() },
+  { id: '3', title: 'Review documentation', completed: false, priority: 'low' as const, createdAt: new Date() },
 ];
 
 export default function DemoPage() {
