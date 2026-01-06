@@ -1,7 +1,7 @@
 "use client"
 
 import { Bell, Search, Menu, LogOut } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Buttons"
 import { Input } from "@/components/ui/input"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { signOut } from "@/lib/auth-client"

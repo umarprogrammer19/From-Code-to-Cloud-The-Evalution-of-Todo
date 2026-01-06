@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/Buttons"
 import { CheckCircle2, Menu } from "lucide-react"
 import { useSession } from "@/lib/auth-client"
 import { ThemeToggle } from "./theme-toggle"
