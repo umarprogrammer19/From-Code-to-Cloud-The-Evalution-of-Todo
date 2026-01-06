@@ -112,7 +112,6 @@ export const useSession = () => {
       // Check if we have a token in localStorage
       if (typeof window !== 'undefined') {
         const token = localStorage.getItem('auth_token');
-        console.log(token);
 
         if (!token) {
           return null;
@@ -120,7 +119,6 @@ export const useSession = () => {
 
         // Decode the token to get user info and check expiration
         const decoded = decodeToken(token);
-        console.log(decoded);
 
         if (!decoded || !decoded.exp || decoded.exp < Date.now() / 1000) {
           // Token is expired or invalid, remove it

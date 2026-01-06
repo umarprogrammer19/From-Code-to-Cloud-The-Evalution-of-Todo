@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { signIn } from "@/lib/auth-client"
+import { signIn, useSession } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
@@ -20,6 +20,14 @@ export function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+
+  const { data: session } = useSession()
+
+  // If already logged in, redirect to dashboard
+  if (session) {
+    router.push("/dashboard")
+    return null
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

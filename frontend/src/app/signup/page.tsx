@@ -1,19 +1,23 @@
 "use client"
 
+import { Icons } from "@/components/icons"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { signUp, useSession } from "@/lib/auth-client"
+import { motion } from "framer-motion"
+import { CheckCircle2, Globe, ShieldCheck, Zap } from "lucide-react"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
-import { useSession, signUp } from "@/lib/auth-client"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
-import { CheckCircle2, ShieldCheck, Zap, Globe } from "lucide-react"
-import Link from "next/link"
 
-const SignupForm = () => {
+export function SignupForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [name, setName] = useState("")
   const [error, setError] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const { data: session } = useSession()
@@ -27,6 +31,7 @@ const SignupForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
+    setIsLoading(true)
 
     try {
       await signUp({ email, password, name })
@@ -34,59 +39,89 @@ const SignupForm = () => {
     } catch (err) {
       setError("An error occurred during sign up. Please try again.")
       console.error("Signup error:", err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-      {error && <div className="text-red-500 text-center">{error}</div>}
-      <div className="rounded-md shadow-sm -space-y-px">
-        <div>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Full Name"
-          />
+    <div className="grid gap-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {error && (
+          <div className="p-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium border border-destructive/20 text-center">
+            {error}
+          </div>
+        )}
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="John Doe"
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email address</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="name@example.com"
+              className="h-11"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="••••••••"
+              className="h-11"
+            />
+          </div>
         </div>
-        <div>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Email address"
-          />
+        <Button type="submit" className="w-full h-11 text-base font-semibold mt-2" disabled={isLoading}>
+          {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : "Sign Up"}
+        </Button>
+      </form>
+
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
         </div>
-        <div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-            placeholder="Password"
-          />
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
 
-      <div>
-        <Button
-          type="submit"
-          className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
-          Sign up
+      <div className="grid grid-cols-2 gap-4">
+        <Button variant="outline" className="h-11 bg-transparent">
+          <Icons.gitHub className="mr-2 h-4 w-4" />
+          GitHub
+        </Button>
+        <Button variant="outline" className="h-11 bg-transparent">
+          <Icons.google className="mr-2 h-4 w-4" />
+          Google
         </Button>
       </div>
-      <div className="text-center mt-4">
-        <a href="/login" className="text-blue-600 hover:text-blue-800">
-          Already have an account? Sign in
-        </a>
-      </div>
-    </form>
+
+      <p className="px-8 text-center text-sm text-muted-foreground">
+        Already have an account?{" "}
+        <Link href="/login" className="font-semibold text-primary hover:underline">
+          Sign In
+        </Link>
+      </p>
+    </div>
   )
 }
 
