@@ -26,20 +26,20 @@ const DashboardPage = () => {
   }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center justify-between">
+    <div className="mx-auto max-w-6xl space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">Manage your tasks and track your productivity.</p>
+          <p className="text-muted-foreground mt-2">Welcome back! Manage your tasks and track your productivity.</p>
         </div>
-        <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary sm:flex">
+        <div className="hidden h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-primary/10 to-secondary/10 text-primary sm:flex">
           <LayoutDashboard className="h-6 w-6" />
         </div>
       </div>
 
       <TodoStats />
 
-      <div className="grid gap-8 lg:grid-cols-[1fr,350px]">
+      <div className="grid gap-8 lg:grid-cols-[1fr,380px]">
         <div className="order-2 lg:order-1">
           <TodoList />
         </div>
