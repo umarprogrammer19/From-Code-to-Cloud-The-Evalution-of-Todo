@@ -13,7 +13,6 @@ import { Icons } from "@/components/icons"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 
-
 export function LoginForm() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
@@ -23,7 +22,6 @@ export function LoginForm() {
 
   const { data: session } = useSession()
 
-  // If already logged in, redirect to dashboard
   if (session) {
     router.push("/dashboard")
     return null
@@ -35,12 +33,10 @@ export function LoginForm() {
     setIsLoading(true)
 
     try {
-      // Sign in using better-auth - this will handle the redirect to callbackURL
-      const result = await signIn({ email, password })
+      await signIn({ email, password })
       if (typeof window !== undefined) window.location.href = "/dashboard"
     } catch (err) {
       setError("Invalid email or password. Please try again.")
-      console.error("Login error:", err)
     } finally {
       setIsLoading(false)
     }
@@ -55,25 +51,25 @@ export function LoginForm() {
       <Card className="border-border/40 shadow-2xl backdrop-blur-sm bg-background/80">
         <CardHeader className="space-y-1.5 pb-6">
           <CardTitle className="text-2xl font-bold text-center">Welcome back</CardTitle>
-          <CardDescription className="text-center">Log in to your account to continue your flow</CardDescription>
+          <CardDescription className="text-center">Log in to your account to continue</CardDescription>
         </CardHeader>
         <CardContent className="grid gap-5">
-          <div className="grid grid-cols-2 gap-6">
-            <Button variant="outline" className="gap-2 bg-transparent">
+          <div className="grid grid-cols-2 gap-4">
+            <Button variant="outline" className="gap-2 bg-transparent border-border/60 hover:border-primary/40">
               <Icons.gitHub className="h-4 w-4" />
-              Github
+              <span className="hidden sm:inline">Github</span>
             </Button>
-            <Button variant="outline" className="gap-2 bg-transparent">
+            <Button variant="outline" className="gap-2 bg-transparent border-border/60 hover:border-primary/40">
               <Icons.google className="h-4 w-4" />
-              Google
+              <span className="hidden sm:inline">Google</span>
             </Button>
           </div>
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t border-border/40" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+              <span className="bg-background px-2 text-muted-foreground">Or continue with email</span>
             </div>
           </div>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -95,7 +91,7 @@ export function LoginForm() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="h-11 focus-visible:ring-primary/20"
+                className="h-11 border-border/60 focus-visible:ring-primary/20"
               />
             </div>
             <div className="space-y-2.5">
@@ -111,11 +107,11 @@ export function LoginForm() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-11 focus-visible:ring-primary/20"
+                className="h-11 border-border/60 focus-visible:ring-primary/20"
               />
             </div>
             <Button
-              className="w-full h-11 text-base font-semibold transition-all hover:-translate-y-px active:translate-y-0"
+              className="w-full h-11 text-base font-semibold transition-all hover:-translate-y-px"
               type="submit"
               disabled={isLoading}
             >
@@ -133,7 +129,7 @@ export function LoginForm() {
         <CardFooter className="flex flex-col gap-4">
           <div className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
+            <Link href="/signup" className="text-primary hover:underline font-semibold">
               Sign up
             </Link>
           </div>
@@ -142,7 +138,6 @@ export function LoginForm() {
     </motion.div>
   )
 }
-
 
 export default function LoginPage() {
   return (
@@ -154,7 +149,7 @@ export default function LoginPage() {
         className="w-full max-w-md"
       >
         <Link href="/" className="mb-10 flex flex-col items-center gap-3 text-center group">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20 transition-transform group-hover:scale-110">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-secondary shadow-lg shadow-primary/20 transition-transform group-hover:scale-110">
             <CheckCircle2 className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>

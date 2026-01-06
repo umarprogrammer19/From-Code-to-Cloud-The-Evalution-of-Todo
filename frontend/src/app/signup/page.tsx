@@ -22,7 +22,6 @@ export function SignupForm() {
 
   const { data: session } = useSession()
 
-  // If already logged in, redirect to dashboard
   if (session) {
     router.push("/dashboard")
     return null
@@ -38,7 +37,6 @@ export function SignupForm() {
       router.push("/login")
     } catch (err) {
       setError("An error occurred during sign up. Please try again.")
-      console.error("Signup error:", err)
     } finally {
       setIsLoading(false)
     }
@@ -62,7 +60,7 @@ export function SignupForm() {
               onChange={(e) => setName(e.target.value)}
               required
               placeholder="John Doe"
-              className="h-11"
+              className="h-11 border-border/60"
             />
           </div>
           <div className="space-y-2">
@@ -74,7 +72,7 @@ export function SignupForm() {
               onChange={(e) => setEmail(e.target.value)}
               required
               placeholder="name@example.com"
-              className="h-11"
+              className="h-11 border-border/60"
             />
           </div>
           <div className="space-y-2">
@@ -86,18 +84,18 @@ export function SignupForm() {
               onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="••••••••"
-              className="h-11"
+              className="h-11 border-border/60"
             />
           </div>
         </div>
         <Button type="submit" className="w-full h-11 text-base font-semibold mt-2" disabled={isLoading}>
-          {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : "Sign Up"}
+          {isLoading ? <Icons.spinner className="mr-2 h-4 w-4 animate-spin" /> : "Create Account"}
         </Button>
       </form>
 
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
+          <span className="w-full border-t border-border/40" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
@@ -105,13 +103,13 @@ export function SignupForm() {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" className="h-11 bg-transparent">
+        <Button variant="outline" className="h-11 bg-transparent border-border/60 hover:border-primary/40">
           <Icons.gitHub className="mr-2 h-4 w-4" />
-          GitHub
+          <span className="hidden sm:inline">GitHub</span>
         </Button>
-        <Button variant="outline" className="h-11 bg-transparent">
+        <Button variant="outline" className="h-11 bg-transparent border-border/60 hover:border-primary/40">
           <Icons.google className="mr-2 h-4 w-4" />
-          Google
+          <span className="hidden sm:inline">Google</span>
         </Button>
       </div>
 
@@ -128,7 +126,7 @@ export function SignupForm() {
 export default function SignupPage() {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      <div className="hidden lg:flex flex-col justify-center p-12 bg-primary text-primary-foreground relative overflow-hidden">
+      <div className="hidden lg:flex flex-col justify-center p-12 bg-linear-to-br from-primary via-primary to-secondary text-primary-foreground relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.1),transparent)]" />
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -137,8 +135,8 @@ export default function SignupPage() {
           className="relative z-10 max-w-md"
         >
           <Link href="/" className="flex items-center gap-3 mb-12">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-xl shadow-black/10">
-              <CheckCircle2 className="h-6 w-6 text-primary" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 shadow-xl border border-white/20">
+              <CheckCircle2 className="h-6 w-6 text-white" />
             </div>
             <span className="text-2xl font-bold tracking-tight">FocusFlow</span>
           </Link>
@@ -188,7 +186,7 @@ export default function SignupPage() {
 
           <div className="mb-8">
             <h1 className="text-3xl font-bold tracking-tight mb-2">Create an account</h1>
-            <p className="text-muted-foreground">Enter your details below to get started</p>
+            <p className="text-muted-foreground">Start managing tasks in seconds</p>
           </div>
 
           <SignupForm />
