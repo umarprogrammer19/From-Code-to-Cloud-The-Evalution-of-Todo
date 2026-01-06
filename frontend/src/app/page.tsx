@@ -1,17 +1,19 @@
-import { Navbar } from "@/components/navbar"
-import { Hero } from "@/components/hero"
-import { Features } from "@/components/features"
+import { Landing } from "@/components/landing"
 import { Footer } from "@/components/footer"
+import { Navbar } from "@/components/navbar"
 
-export default function Home() {
+export const metadata = {
+  title: "FocusFlow - Master Your Productivity",
+  description:
+    "The ultimate task management app for professionals. Organize, prioritize, and accomplish your goals with ease.",
+}
+
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background selection:bg-primary/10 selection:text-primary">
+    <>
       <Navbar />
-      <main className="flex-1">
-        <Hero />
-        <Features />
-      </main>
+      <Landing />
       <Footer />
-    </div>
+    </>
   )
 }
