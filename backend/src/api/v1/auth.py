@@ -62,7 +62,7 @@ def signin(
         "user": UserResponse(id=user.id, email=user.email, name=user_name)
     }
 
-
+# SignUp  
 @router.post("/signup", response_model=Token)
 def signup(
     signup_data: SignUpRequest,
