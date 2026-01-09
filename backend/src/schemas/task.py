@@ -33,6 +33,7 @@ class TaskUpdate(BaseModel):
     priority: Optional[PriorityLevel] = None
 
 
+# Task Response Interface
 class TaskResponse(BaseModel):
     """
     Schema for task response from API.
