@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     Application settings loaded from environment variables.
     """
 
+    # Basic Settings
     app_name: str = "Task Management API"
     api_version: str = "v1"
     debug: bool = False
