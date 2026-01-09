@@ -30,6 +30,7 @@ class SignUpRequest(BaseModel):
     password: str
     name: Optional[str] = None
 
+# Login
 @router.post("/signin", response_model=Token)
 def signin(
     signin_data: SignInRequest,
