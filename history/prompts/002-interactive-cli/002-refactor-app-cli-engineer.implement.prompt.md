@@ -6,7 +6,7 @@ date: 2025-12-13
 model: Claude Sonnet 4.5
 feature: 002-interactive-cli
 branch: 002-interactive-cli
-user: Claude Code
+user: Umar Farooq
 command: /sp.implement @agent-cli-engineer Refactor the app.
 labels: ["refactor", "interactive", "cli", "questionary"]
 links:

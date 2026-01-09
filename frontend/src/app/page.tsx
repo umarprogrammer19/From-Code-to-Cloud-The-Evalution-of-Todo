@@ -1,27 +1,19 @@
-'use client';
+import { Landing } from "@/components/landing"
+import { Footer } from "@/components/footer"
+import { Navbar } from "@/components/navbar"
 
-import { useEffect } from 'react';
-import { useSession } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+export const metadata = {
+  title: "FocusFlow - Master Your Productivity",
+  description:
+    "The ultimate task management app for professionals. Organize, prioritize, and accomplish your goals with ease.",
+}
 
-export default function HomePage() {
-  const { data: session, isLoading: isPending } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isPending) {
-      if (session) {
-        router.push('/dashboard');
-      } else {
-        router.push('/login');
-      }
-    }
-  }, [session, isPending, router]);
-
-  // Show a loading state while determining where to redirect
+export default function LandingPage() {
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="text-lg">Redirecting...</div>
-    </div>
-  );
+    <>
+      <Navbar />
+      <Landing />
+      <Footer />
+    </>
+  )
 }

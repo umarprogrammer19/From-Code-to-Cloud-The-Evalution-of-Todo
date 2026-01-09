@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useSession, signOut } from '@/lib/auth-client';
-import { Button } from './Button';
+import { Button } from './button';
 import { useRouter } from 'next/navigation';
 
 interface LayoutProps {
