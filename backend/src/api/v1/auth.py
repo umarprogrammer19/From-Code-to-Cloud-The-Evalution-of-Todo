@@ -10,6 +10,7 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+# Basic Interfaces
 class UserResponse(BaseModel):
     id: int
     email: str
