@@ -76,6 +76,7 @@ def update_task(
     return task
 
 
+# Task Delete
 @router.delete("/{task_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_task(
     *,
