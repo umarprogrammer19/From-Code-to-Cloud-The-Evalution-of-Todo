@@ -60,5 +60,4 @@ uv run pytest
 ```
 
 ## API Documentation
-
 The API documentation is automatically available at `/docs` when the server is running.
