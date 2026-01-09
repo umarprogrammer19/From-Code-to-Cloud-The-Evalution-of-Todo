@@ -36,11 +36,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes - the user_id path parameter will be part of the route
 app.include_router(tasks_router, prefix="/api/{user_id}/tasks", tags=["tasks"])
-# Include simple API routes that extract user_id from JWT token
 app.include_router(tasks_simple_router, prefix="/api", tags=["tasks-simple"])
-# Include auth routes for authentication
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
 
 
