@@ -22,6 +22,7 @@ class TaskCreate(BaseModel):
     priority: Optional[PriorityLevel] = None
 
 
+# Task Update Interface
 class TaskUpdate(BaseModel):
     """
     Schema for updating an existing task.
