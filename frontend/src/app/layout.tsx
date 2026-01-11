@@ -1,5 +1,6 @@
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import Providers from "@/lib/tanstack-query-client"
+import { ToastProvider } from "@/components/ui/toast"
 import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
@@ -33,7 +34,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <Providers>{children}</Providers>
+          <Providers>
+            {children}
+            <ToastProvider />
+          </Providers>
         </ThemeProvider>
         <Analytics />
       </body>

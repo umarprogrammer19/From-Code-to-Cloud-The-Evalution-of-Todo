@@ -76,7 +76,7 @@ export function DashboardSidebar() {
                             <Link key={item.href} href={item.href}>
                                 <span
                                     className={cn(
-                                        "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-accent/50 hover:text-accent-foreground",
+                                        "group flex items-center rounded-md px-3 py-2 text-md font-medium transition-all hover:bg-accent/50 hover:text-accent-foreground mb-2",
                                         pathname === item.href ? "bg-accent text-accent-foreground" : "text-muted-foreground",
                                     )}
                                 >
@@ -117,7 +117,7 @@ export function DashboardSidebar() {
                     </div>
                     <div className="flex flex-1 flex-col">
                         <span className="text-xs font-semibold">{session?.user?.name || "User"}</span>
-                        <span className="text-[10px] text-muted-foreground">Pro Plan</span>
+                        {/* <span className="text-[10px] text-muted-foreground">Pro Plan</span> */}
                     </div>
                     <Link href="/dashboard/settings">
                         <Settings className="h-4 w-4 text-muted-foreground hover:text-primary cursor-pointer transition-colors" />
