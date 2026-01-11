@@ -76,7 +76,7 @@ export function DashboardSidebar() {
                             <Link key={item.href} href={item.href}>
                                 <span
                                     className={cn(
-                                        "group flex items-center rounded-md px-3 py-2 text-sm font-medium transition-all hover:bg-accent/50 hover:text-accent-foreground",
+                                        "group flex items-center rounded-md px-3 py-2 text-md font-medium transition-all hover:bg-accent/50 hover:text-accent-foreground",
                                         pathname === item.href ? "bg-accent text-accent-foreground" : "text-muted-foreground",
                                     )}
                                 >
