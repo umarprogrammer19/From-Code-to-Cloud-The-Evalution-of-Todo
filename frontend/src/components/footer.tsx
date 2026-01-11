@@ -4,7 +4,7 @@ import { CheckCircle2, Github, Twitter, Linkedin } from "lucide-react"
 export function Footer() {
     return (
         <footer className="border-t bg-background">
-            <div className="container mx-auto px-4 py-12">
+            <div className="container mx-auto px-12 py-12">
                 <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
                     <div className="col-span-full lg:col-span-2">
                         <Link href="/" className="mb-6 flex items-center gap-2">
