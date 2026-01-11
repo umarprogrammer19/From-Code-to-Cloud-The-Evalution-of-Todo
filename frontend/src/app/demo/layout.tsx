@@ -1,5 +1,5 @@
-import { Sidebar } from '@/components/layout/sidebar';
-import { TopNav } from '@/components/layout/top-nav';
+/* import { Sidebar } from '@/components/layout/sidebar';
+import { TopNav } from '@/components/layout/top-nav'; */
 
 export default function DemoLayout({
   children,
@@ -7,14 +7,10 @@ export default function DemoLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen">
-      <Sidebar />
-      <div className="flex-1 flex flex-col">
-        <TopNav />
-        <main className="flex-1 overflow-auto">
-          {children}
-        </main>
-      </div>
+    <div className="min-h-screen">
+      <main>
+        {children}
+      </main>
     </div>
   );
 }
