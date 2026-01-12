@@ -1,16 +1,23 @@
 """API endpoints for chat functionality."""
 
+import sys
+from pathlib import Path
+
+# Add the backend directory to the path to allow absolute imports
+# This must be done before other imports
+backend_dir = Path(__file__).resolve().parents[2]  # Go up 3 levels to reach backend root
+sys.path.insert(0, str(backend_dir))
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session
 from typing import List
 import uuid
 import json
 
-from ...models.conversation import Conversation, Message, RoleType
-from ...db.chat_service import get_or_create_conversation, add_message, get_chat_history
-from ...database import get_session
-# For now, we'll comment out the agent runner import to test basic functionality
-# from ...agent.runner import run_mcp_agent
+from src.models.conversation import Conversation, Message, RoleType
+from src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
+from database import get_session
+from agent.runner import run_mcp_agent
 
 
 router = APIRouter()
@@ -149,9 +156,12 @@ def process_chat_message(
             content=message
         )
 
-        # For now, return a placeholder response since the agent runner has import issues
-        # In the full implementation, this would call run_mcp_agent()
-        agent_response = f"Echo: {message} (MCP Agent integration pending)"
+        # Run the agent to get response
+        agent_response = run_mcp_agent(
+            user_id=user_id,
+            message=message,
+            conversation_id=conversation_id
+        )
 
         # Persist assistant response to DB
         assistant_message = add_message(
