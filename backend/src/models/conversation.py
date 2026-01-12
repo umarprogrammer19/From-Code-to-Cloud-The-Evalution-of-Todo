@@ -1,4 +1,4 @@
-"""Database models for chat history."""
+"""Conversation and Message models for chat history."""
 
 from sqlmodel import SQLModel, Field, Relationship
 import uuid

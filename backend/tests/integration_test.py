@@ -2,8 +2,8 @@
 
 import pytest
 from sqlmodel import Session, create_engine, SQLModel
-from backend.models import Conversation, Message, RoleType
-from backend.db.chat_service import get_or_create_conversation, add_message, get_chat_history, get_user_conversations
+from backend.src.models.conversation import Conversation, Message, RoleType
+from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history, get_user_conversations
 
 
 def test_complete_chat_flow():

@@ -5,8 +5,8 @@ from sqlmodel import Session
 from typing import List
 import uuid
 import json
-from backend.models import Conversation, Message, RoleType
-from backend.db.chat_service import get_or_create_conversation, add_message, get_chat_history
+from backend.src.models.conversation import Conversation, Message, RoleType
+from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
 from backend.database import get_session
 
 
@@ -95,7 +95,7 @@ def get_conversation_history(conversation_id: str, session: Session = Depends(ge
 def list_user_conversations(user_id: str, session: Session = Depends(get_session)):
     """List all conversations for a user."""
     try:
-        from backend.db.chat_service import get_user_conversations
+        from backend.src.db.chat_service import get_user_conversations
 
         conversations = get_user_conversations(session, user_id)
 

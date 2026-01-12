@@ -2,7 +2,7 @@
 
 from sqlmodel import Session, select
 from typing import List, Optional
-from backend.models import Conversation, Message, RoleType
+from backend.src.models.conversation import Conversation, Message, RoleType
 import uuid
 import json
 
