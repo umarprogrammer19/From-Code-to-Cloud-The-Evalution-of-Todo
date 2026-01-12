@@ -13,11 +13,17 @@ from sqlmodel import Session
 from typing import List
 import uuid
 import json
+<<<<<<< HEAD
 
 from src.models.conversation import Conversation, Message, RoleType
 from src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
 from database import get_session
 from agent.runner import run_mcp_agent
+=======
+from backend.src.models.conversation import Conversation, Message, RoleType
+from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
+from backend.database import get_session
+>>>>>>> parent of 81c7706 (MCP Server Agent Success)
 
 
 router = APIRouter()
@@ -122,6 +128,7 @@ def list_user_conversations(user_id: str, session: Session = Depends(get_session
             ]
         }
     except Exception as e:
+<<<<<<< HEAD
         raise HTTPException(status_code=500, detail=f"Error retrieving user conversations: {str(e)}")
 
 
@@ -178,3 +185,6 @@ def process_chat_message(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")
+=======
+        raise HTTPException(status_code=500, detail=f"Error retrieving user conversations: {str(e)}")
+>>>>>>> parent of 81c7706 (MCP Server Agent Success)

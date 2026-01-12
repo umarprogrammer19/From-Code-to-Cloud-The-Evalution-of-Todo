@@ -42,13 +42,7 @@ def get_session():
 def create_db_and_tables():
     """Create database tables."""
     logger.info("Creating database tables...")
-    import sys
-    from pathlib import Path
-    # Add the backend directory to the path to allow absolute imports
-    backend_dir = Path(__file__).parent
-    sys.path.insert(0, str(backend_dir))
-
-    from src.models.conversation import Conversation, Message
+    from backend.src.models.conversation import Conversation, Message
     from sqlmodel import SQLModel
 
     try:

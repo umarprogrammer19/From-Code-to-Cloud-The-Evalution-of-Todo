@@ -29,9 +29,6 @@ class Settings(BaseSettings):
     better_auth_url: str = os.getenv("BETTER_AUTH_URL", "http://localhost:8000")
     better_auth_secret: str = os.getenv("BETTER_AUTH_SECRET", "")
 
-    # OpenAI settings
-    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
-
     # Server settings
     port: int = int(os.getenv("PORT", "8000"))
 
