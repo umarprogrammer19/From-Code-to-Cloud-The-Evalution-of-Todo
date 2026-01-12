@@ -24,9 +24,9 @@ from mcp.server import Server
 from mcp.server.experimental.task_context import ServerTaskContext
 from mcp.types import CallToolResult, CreateTaskResult, TextContent, Tool, ToolExecution, TASK_REQUIRED
 from sqlmodel import Session
-from backend.database import get_session
-from backend.src.services.task_service import TaskService
-from backend.src.schemas.task import TaskCreate, TaskUpdate
+from database import get_session
+from src.services.task_service import TaskService
+from src.schemas.task import TaskCreate, TaskUpdate
 from typing import Dict, Any
 import json
 
@@ -321,9 +321,9 @@ async def handle_tool(name: str, arguments: Dict[str, Any]) -> CallToolResult | 
 ```python
 from agents import Agent, Runner, function_tool
 from sqlmodel import Session
-from backend.database import get_session
-from backend.src.services.task_service import TaskService
-from backend.src.schemas.task import TaskCreate, TaskUpdate
+from database import get_session
+from src.services.task_service import TaskService
+from src.schemas.task import TaskCreate, TaskUpdate
 from typing import Dict, Any
 import json
 
@@ -480,9 +480,9 @@ async def run_agent(user_id: int, message: str, conversation_id: str) -> str:
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 from typing import Dict, Any
-from backend.database import get_session
-from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
-from backend.agent.runner import run_agent
+from database import get_session
+from src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
+from agent.runner import run_agent
 from uuid import UUID
 
 router = APIRouter(prefix="/api/{user_id}", tags=["chat"])
@@ -514,7 +514,7 @@ async def chat_endpoint(user_id: str, message: str, conversation_id: str = None)
                 conv_uuid = UUID(conversation_id)
                 # Check if conversation exists and belongs to user
                 # We'll need to create a function to get conversation by ID and validate user
-                from backend.src.models.conversation import Conversation
+                from src.models.conversation import Conversation
                 conversation = session.get(Conversation, conv_uuid)
                 if not conversation or conversation.user_id != user_id:
                     # Create new conversation if not found or doesn't belong to user
@@ -563,7 +563,7 @@ def get_conversation_by_id_and_user(session: Session, conversation_id: UUID, use
     """
     Get conversation by ID and verify it belongs to the user.
     """
-    from backend.src.models.conversation import Conversation
+    from src.models.conversation import Conversation
     conversation = session.get(Conversation, conversation_id)
     if not conversation or conversation.user_id != user_id:
         return None
@@ -574,7 +574,7 @@ def get_conversation_by_id_and_user(session: Session, conversation_id: UUID, use
 
 ```python
 # Example of how to use the MCP server
-from backend.mcp.tools import server
+from mcp.tools import server
 
 # Start the MCP server (typically done in main.py or startup script)
 if __name__ == "__main__":
