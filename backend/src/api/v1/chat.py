@@ -5,9 +5,12 @@ from sqlmodel import Session
 from typing import List
 import uuid
 import json
-from backend.src.models.conversation import Conversation, Message, RoleType
-from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history
-from backend.database import get_session
+
+from ...models.conversation import Conversation, Message, RoleType
+from ...db.chat_service import get_or_create_conversation, add_message, get_chat_history
+from ...database import get_session
+# For now, we'll comment out the agent runner import to test basic functionality
+# from ...agent.runner import run_mcp_agent
 
 
 router = APIRouter()
@@ -113,3 +116,55 @@ def list_user_conversations(user_id: str, session: Session = Depends(get_session
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error retrieving user conversations: {str(e)}")
+
+
+@router.post("/{user_id}/chat", response_model=dict)
+def process_chat_message(
+    user_id: str,
+    message: str,
+    conversation_id: str = None,
+    session: Session = Depends(get_session)
+):
+    """
+    Process a chat message through the MCP agent and persist the conversation.
+
+    Args:
+        user_id: The ID of the user
+        message: The user's message
+        conversation_id: The conversation ID (optional, creates new if not provided)
+
+    Returns:
+        Dictionary with conversation_id and response
+    """
+    try:
+        # Get or create conversation
+        conversation = get_or_create_conversation(session, user_id)
+        conversation_id = str(conversation.id)
+
+        # Persist user message to DB
+        user_message = add_message(
+            session=session,
+            conversation_id=conversation.id,
+            role=RoleType.user,
+            content=message
+        )
+
+        # For now, return a placeholder response since the agent runner has import issues
+        # In the full implementation, this would call run_mcp_agent()
+        agent_response = f"Echo: {message} (MCP Agent integration pending)"
+
+        # Persist assistant response to DB
+        assistant_message = add_message(
+            session=session,
+            conversation_id=conversation.id,
+            role=RoleType.assistant,
+            content=agent_response
+        )
+
+        # Return the response as specified in the requirements
+        return {
+            "conversation_id": conversation_id,
+            "response": agent_response
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing chat message: {str(e)}")

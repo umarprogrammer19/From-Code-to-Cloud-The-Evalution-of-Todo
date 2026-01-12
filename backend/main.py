@@ -2,9 +2,17 @@ from fastapi import FastAPI
 from src.api.v1.tasks import router as tasks_router
 from src.api.v1.tasks_simple import router as tasks_simple_router
 from src.api.v1.auth import router as auth_router
+from src.api.v1.chat import router as chat_router
 from src.config.settings import settings
 from contextlib import asynccontextmanager
-from data.database import init_db
+import sys
+from pathlib import Path
+
+# Add the backend directory to the path to allow absolute imports
+backend_dir = Path(__file__).parent
+sys.path.insert(0, str(backend_dir))
+
+from database import create_db_and_tables as init_db  # Renaming for compatibility
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -39,6 +47,7 @@ app.add_middleware(
 app.include_router(tasks_router, prefix="/api/{user_id}/tasks", tags=["tasks"])
 app.include_router(tasks_simple_router, prefix="/api", tags=["tasks-simple"])
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
+app.include_router(chat_router, prefix="/api", tags=["chat"])
 
 
 # Health check endpoint
