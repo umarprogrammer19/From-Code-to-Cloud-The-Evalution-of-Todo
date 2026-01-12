@@ -40,6 +40,18 @@ All code must follow clean architecture principles; Frontend components must be 
 ### VIII. API Standards (Strict)
 All endpoints: `/api/{user_id}/...`; Backend runs on Port `8000`; Frontend runs on Port `3000`; All API responses must follow consistent JSON structure; Error responses must include appropriate HTTP status codes and descriptive messages; API rate limiting and validation required
 
+### IX. Project Scope (Phase 3: AI Chatbot)
+**Goal**: Build a conversational interface for Todo management; **Architecture**: Stateless HTTP Chat Endpoint -> OpenAI Agents SDK -> MCP Server (Tools); **State**: The server MUST remain stateless. All conversation history persists in `Neon DB`
+
+### X. Tech Stack & Standards (Phase 3)
+**Protocol**: STRICTLY use **Model Context Protocol (MCP)** for all AI tools; **AI Engine**: **OpenAI Agents SDK** (Python); **Frontend**: **OpenAI ChatKit** (React); **Database**: Add `Conversation` and `Message` tables to SQLModel
+
+### XI. MCP Tooling Rules
+Every operation (`add`, `list`, `complete`, `delete`) MUST be an MCP Tool; Tools must accept `user_id` to ensure data isolation; Tools must return structured JSON, not plain text
+
+### XII. Documentation Protocol
+Before implementing new SDKs (MCP, Agents), you MUST fetch the latest documentation using tools like context7 and playwright if you are unsure of the syntax
+
 ## Architecture Constraints
 
 - **Backend Framework**: FastAPI with SQLModel for database operations
@@ -65,4 +77,4 @@ All endpoints: `/api/{user_id}/...`; Backend runs on Port `8000`; Frontend runs 
 
 All implementations must comply with this constitution; Architecture violations must be corrected; Dependencies must be added via `uv` for Python and npm/yarn for JS/TS; Database operations must use SQLModel with proper user isolation; Changes to architecture require constitution amendments; Authentication must follow JWT-only approach without sessions
 
-**Version**: 2.1.0 | **Ratified**: 2025-12-12 | **Last Amended**: 2026-01-05
+**Version**: 2.1.0 | **Ratified**: 2025-12-12 | **Last Amended**: 2026-01-12
