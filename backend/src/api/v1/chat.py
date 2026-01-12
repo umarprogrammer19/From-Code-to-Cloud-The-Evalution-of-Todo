@@ -105,7 +105,7 @@ def get_conversation_history(conversation_id: str, session: Session = Depends(ge
 def list_user_conversations(user_id: str, session: Session = Depends(get_session)):
     """List all conversations for a user."""
     try:
-        from backend.src.db.chat_service import get_user_conversations
+        from src.db.chat_service import get_user_conversations
 
         conversations = get_user_conversations(session, user_id)
 
