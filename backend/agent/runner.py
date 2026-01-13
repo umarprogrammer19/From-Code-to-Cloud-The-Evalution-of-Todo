@@ -5,7 +5,7 @@ This module implements the OpenAI agent runner that accepts user_id, message, an
 uses MCP tools to process the message, and returns a final text response.
 """
 
-from typing import Dict, Optional
+from typing import Dict, Any, Optional
 from agents import Agent, Runner, function_tool
 import os
 import sys
@@ -57,9 +57,8 @@ class MCPTaskAgent:
             ],
         )
 
-        # Store the agent for later use
-        self.runner = Runner()
-        self.agent = self.agent  # Keep reference to the agent
+        # Create a runner for the agent
+        self.runner = Runner.run_sync(agent=self.agent)
 
     def _create_add_task_tool(self):
         """Create the add_task function tool."""
@@ -188,7 +187,7 @@ class MCPTaskAgent:
         ]
 
         # Run the agent
-        result = self.runner.run_sync(starting_agent=self.agent, thread=thread)
+        result = self.runner(thread=thread)
 
         # Extract and return the response
         if result and hasattr(result, "messages"):
