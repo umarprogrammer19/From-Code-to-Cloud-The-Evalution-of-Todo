@@ -8,7 +8,7 @@ import json
 
 from ...models.conversation import Conversation, Message, RoleType
 from ...db.chat_service import get_or_create_conversation, add_message, get_chat_history
-from ....database import get_session
+from data.database import get_session
 # For now, we'll comment out the agent runner import to test basic functionality
 # from ...agent.runner import run_mcp_agent
 

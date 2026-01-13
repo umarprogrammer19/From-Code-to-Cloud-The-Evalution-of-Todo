@@ -42,7 +42,6 @@ def get_session():
 def create_db_and_tables():
     """Create database tables."""
     logger.info("Creating database tables...")
-    from backend.src.models.conversation import Conversation, Message
     from sqlmodel import SQLModel
 
     try:
