@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from src.api.v1.tasks import router as tasks_router
 from src.api.v1.tasks_simple import router as tasks_simple_router
 from src.api.v1.auth import router as auth_router
+from src.api.v1.chat import router as chat_router
 from src.config.settings import settings
 from contextlib import asynccontextmanager
 from data.database import init_db
@@ -39,6 +40,7 @@ app.add_middleware(
 app.include_router(tasks_router, prefix="/api/{user_id}/tasks", tags=["tasks"])
 app.include_router(tasks_simple_router, prefix="/api", tags=["tasks-simple"])
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
+app.include_router(chat_router, prefix="/api/v1/chat", tags=["chat"])
 
 
 # Health check endpoint

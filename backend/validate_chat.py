@@ -3,8 +3,8 @@
 Simple validation script to ensure the chat functionality works correctly.
 """
 
-from backend.src.models.conversation import Conversation, Message, RoleType
-from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history, get_user_conversations
+from src.models.conversation import Conversation, Message, RoleType
+from src.db.chat_service import get_or_create_conversation, add_message, get_chat_history, get_user_conversations
 from sqlmodel import create_engine, SQLModel, Session
 import uuid
 
@@ -82,7 +82,7 @@ def validate_api_endpoints():
     print("\n🔍 Validating API endpoints...")
 
     # Just try to import to make sure there are no import errors
-    from backend.src.api.v1.chat import router
+    from src.api.v1.chat import router
     assert router is not None
     print("✅ API endpoints import successfully")
 

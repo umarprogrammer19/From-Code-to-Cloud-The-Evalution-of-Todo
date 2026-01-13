@@ -1,9 +1,8 @@
 """Integration test for the complete chat history functionality."""
 
-import pytest
 from sqlmodel import Session, create_engine, SQLModel
-from backend.src.models.conversation import Conversation, Message, RoleType
-from backend.src.db.chat_service import get_or_create_conversation, add_message, get_chat_history, get_user_conversations
+from src.models.conversation import Conversation, Message, RoleType
+from src.db.chat_service import get_or_create_conversation, add_message, get_chat_history, get_user_conversations
 
 
 def test_complete_chat_flow():

@@ -1,7 +1,7 @@
 # Chat History Database Usage Guide
 
 ## Overview
-This module provides database functionality for storing and retrieving chat conversations and messages. It uses SQLModel with Neon Serverless PostgreSQL as the database backend.
+This module provides database functionality for storing and retrieving chat conversations and messages. It uses SQLModel with Neon Serverless PostgreSQL as the database 
 
 ## Models
 
@@ -61,7 +61,7 @@ This module provides database functionality for storing and retrieving chat conv
 
 ```python
 from sqlmodel import Session
-from backend.db.chat_service import get_or_create_conversation, add_message, get_chat_history
+from db.chat_service import get_or_create_conversation, add_message, get_chat_history
 
 # Initialize database session
 session = Session(engine)

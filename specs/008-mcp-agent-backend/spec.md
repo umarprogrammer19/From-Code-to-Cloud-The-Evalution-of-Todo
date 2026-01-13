@@ -3,7 +3,7 @@
 **Feature Branch**: `008-mcp-agent-backend`
 **Created**: 2026-01-12
 **Status**: Draft
-**Input**: User description: "@.claude/agents/mcp-architect.md I want to build the MCP Agent Backend.
+**Input**: User description: "@.claude/agents/mcp-architect.md I want to build the MCP Agent 
 
 **Requirements**:
 1. **MCP Tools**: Create `backend/mcp/tools.py`. Implement `add_task`, `list_tasks`, `complete_task`, `delete_task`, `update_task` using the specific Input/Output JSON formats defined in the Phase III Specs.

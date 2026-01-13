@@ -25,7 +25,7 @@ tests_yaml: |
 
 ## User Input
 
-@.claude\agents\fullstack-architect.md I want to build the Phase 2 Backend.
+@.claude\agents\fullstack-architect.md I want to build the Phase 2 
 
 **Requirements**:
 1. **Folder**: Make `backend/` folder for backend and do all the work here.

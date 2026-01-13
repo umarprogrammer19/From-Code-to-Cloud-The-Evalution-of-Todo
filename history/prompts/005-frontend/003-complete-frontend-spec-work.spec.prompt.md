@@ -56,7 +56,7 @@ evaluation: |
 **Requirements**:
 1. [cite_start]**Auth**: Install and configure `better-auth` with the JWT plugin[cite: 23] use better auth mcp server for reading better auth if mcp is not available use this to add claude mcp add --transport http better-auth https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp other wise use context 7.
 2. **UI**: Create a standard Todo Dashboard using nextjs and Tailwind CSS.
-3. **Integration**: Connect to the FastAPI backend. [cite_start]Ensure the JWT token is sent with every request[cite: 24].
+3. **Integration**: Connect to the FastAPI  [cite_start]Ensure the JWT token is sent with every request[cite: 24].
 
 ## Response
 

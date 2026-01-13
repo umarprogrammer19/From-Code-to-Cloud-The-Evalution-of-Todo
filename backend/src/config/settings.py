@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     # Server settings
     port: int = int(os.getenv("PORT", "8000"))
 
+    # OpenAI settings
+    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+
     class Config:
         env_file = ".env"
 

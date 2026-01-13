@@ -1,6 +1,6 @@
 import pytest
 from sqlmodel import create_engine, Session
-from backend.src.models.conversation import Conversation, Message
+from src.models.conversation import Conversation, Message
 
 
 @pytest.fixture(name="engine")

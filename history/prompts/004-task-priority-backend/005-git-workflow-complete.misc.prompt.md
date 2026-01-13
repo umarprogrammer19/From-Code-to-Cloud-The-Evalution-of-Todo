@@ -35,7 +35,7 @@ sp.git.commit_pr is running… Your task is to intelligently executes git workfl
 
 ## Response snapshot
 
-Successfully committed the task priority feature implementation to branch 004-task-priority-backend. All changes have been pushed to remote. GitHub CLI requires authentication to create PR automatically.
+Successfully committed the task priority feature implementation to branch 004-task-priority- All changes have been pushed to remote. GitHub CLI requires authentication to create PR automatically.
 
 ## Outcome
 
