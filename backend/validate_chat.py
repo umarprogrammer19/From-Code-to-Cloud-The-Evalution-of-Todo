@@ -19,7 +19,6 @@ def validate_chat_models():
     assert conversation.id is not None
     print("✅ Conversation model works correctly")
 
-    # Test creating a message
     message = Message(
         conversation_id=uuid.uuid4(),
         role=RoleType.user,
