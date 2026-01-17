@@ -5,6 +5,7 @@ from datetime import datetime
 from sqlalchemy import DateTime, func
 from sqlmodel import Field as SQLModelField
 
+# Password Context
 pwd_context = CryptContext(
     schemes=["argon2", "bcrypt"],  # Use argon2 as primary, bcrypt as fallback
     deprecated="auto",
