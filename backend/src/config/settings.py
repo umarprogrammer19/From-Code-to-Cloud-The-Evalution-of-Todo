@@ -1,7 +1,7 @@
 from pydantic_settings import BaseSettings
 import os
 
-
+# Settings
 class Settings(BaseSettings):
     """
     Application settings loaded from environment variables.
