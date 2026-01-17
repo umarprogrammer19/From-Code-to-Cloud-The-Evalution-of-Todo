@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-
+# Token
 class Token(BaseModel):
     """
     Schema for JWT token response.
