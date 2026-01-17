@@ -14,7 +14,7 @@ class RoleType(str, Enum):
     assistant = "assistant"
     tool = "tool"
 
-
+# For Conversation 
 class Conversation(SQLModel, table=True):
     """Conversation model representing a logical grouping of messages."""
 
