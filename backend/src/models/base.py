@@ -4,7 +4,7 @@ from typing import Optional
 from sqlalchemy import DateTime, func
 from sqlmodel import Field
 
-
+# Base Model
 class Base(SQLModel):
     """
     Base class that includes common fields for all models.
