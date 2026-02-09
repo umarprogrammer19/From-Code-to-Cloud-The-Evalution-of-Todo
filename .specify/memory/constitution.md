@@ -1,80 +1,61 @@
-<!-- SYNC IMPACT REPORT:
-Version change: 2.0.0 -> 2.1.0
-Modified principles: II. Tech Stack Standards (Full-Stack) -> II. Tech Stack Standards (Full-Stack), added Frontend Design System section
-Added sections: IX. Frontend Design System (Strict)
-Templates requiring updates:
-  - .specify/templates/plan-template.md ⚠ pending
-  - .specify/templates/spec-template.md ⚠ pending
-  - .specify/templates/tasks-template.md ⚠ pending
-  - .specify/templates/commands/*.md ⚠ pending
-Follow-up TODOs: Verify all dependent templates are updated for frontend design system rules
--->
-# Todo App Constitution
+# Project Constitution: Hackathon II – The Evolution of Todo: Mastering Spec-Driven Development & Cloud Native AI
 
-## Core Principles
+This constitution governs the ENTIRE hackathon from Phase I (Console App) to Phase V (Cloud Deployment), simulating real-world software evolution. It ensures AI-native, spec-driven approach where engineer is "system architect" not "syntax writer".
 
-### I. Project Scope (Full-Stack Monorepo)
-**Goal**: Build a multi-user web app with Next.js (Frontend) and FastAPI (Backend); **Structure**: `frontend/`: Next.js 16+ (App Router), `backend/`: FastAPI + SQLModel, `specs/`: Centralized feature specifications; **Constraint**: All code must be in a single monorepo structure
+## Immutable Principles (Apply to All Phases, Never Change):
 
-### II. Tech Stack Standards (Full-Stack)
-**Backend**: Python 3.13+, FastAPI, Uvicorn, SQLModel; Managed by `uv`; **Database**: Neon Serverless PostgreSQL; **Frontend**: Next.js 16+, TypeScript, Tailwind CSS; **Auth**: Better Auth (Frontend) + JWT Verification (Backend); **Package Management**: STRICTLY use `uv add` for backend dependencies and `npm`/`yarn` for frontend
+### Spec-Driven Development
+All code and infrastructure must be generated exclusively by Claude Code; no manual writing is allowed. Refine specifications until output is correct. Use Spec-Kit Plus for all specs, plans, tasks, and implementations. This ensures consistent, high-quality output that follows best practices.
 
-### IX. Frontend Design System (Strict)
-**Design System**: STRICTLY use **Shadcn/UI** (based on Radix UI) for all interactive components (Dialogs, Dropdowns, Inputs); **Styling**: Use **Tailwind CSS** with a consistent color variable theme (CSS Variables); **Icons**: Use **Lucide React** for all icons; **UX Standards**: Every action (Add, Delete, Save) MUST show a **Toast Notification** (Success/Error); Use **Skeleton Loaders** instead of simple spinners for data fetching; The app MUST be fully functional on Mobile and Desktop; Use `framer-motion` for subtle entry animations (lists fading in)
+### Reusable Intelligence  
+Every phase must create and reuse Claude Code Subagents and Agent Skills. For example, a CRUD subagent created in Phase I should be reusable in Phases II-V. The aim is to earn +200 bonus points by making skills modular and placing them in an agents/skills/ folder for easy access and maintenance.
 
-### III. Architecture (Full-Stack Non-Negotiable)
-frontend/: Next.js 16+ with App Router for UI components and routing; backend/: FastAPI + SQLModel for API endpoints and data models; specs/: Centralized feature specifications; data/: Database schema definitions and migrations; Strict separation of concerns between frontend, backend, and shared logic; **Dependency Management**: Use `uv` for Python dependencies, npm/yarn for JavaScript/TypeScript
+### Tech Stack Adherence
+Specific technology stack must be followed: UV for Python dependencies; Python 3.13+ with comprehensive type hints; Next.js 16+ with App Router for frontend; FastAPI for backend services; SQLModel ORM for database interactions; Neon Postgres DB for data storage; OpenAI Agents/ChatKit/MCP SDK for AI capabilities; Docker/Minikube/Helm for Kubernetes orchestration; Kafka (Redpanda) + Dapr for event-driven architecture; kubectl-ai/kagent/Gordon for AIOps automation.
 
-### IV. Test-First Approach (Full-Stack)
-TDD mandatory for both frontend and backend: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced; pytest for backend tests, Jest/Cypress for frontend tests; Unit and integration tests required for all critical paths
+### Multi-Language Support
+Urdu language support must be added to user-facing components including console prompts, web UI elements, and chatbot responses for +100 bonus points. Voice commands for +200 bonus points should be implemented in Phase III and beyond for enhanced accessibility.
 
-### V. Data Management (Database-Driven)
-Neon Serverless PostgreSQL as the single source of truth; SQLModel for ORM and database schema management; Proper database connection handling and transaction management; Data integrity and validation required at both frontend and backend; Database migration scripts must be version-controlled
+### Monorepo Structure
+The project must follow a monorepo structure with the root containing .spec-kit/config.yaml, specs/ organized by features/api/database/ui, CLAUDE.md at root and in frontend/backend directories, frontend/, backend/, agents/, skills/, and docker-compose.yml. Reference specs using @specs/path.md notation for clear documentation and navigation.
 
-### VI. Code Quality Standards (Full-Stack)
-All code must follow clean architecture principles; Frontend components must be properly typed with TypeScript; Backend API routes must follow RESTful conventions; Error handling for database operations and network requests; Type hints required throughout backend code; Consistent code formatting using ESLint/Prettier for frontend and Black/isort for backend
+### Code Quality & Cleanliness
+Follow SOLID principles, PEP 8 standards, with comprehensive tests using pytest. Design statelessly wherever possible (e.g., chat endpoints in Phase III). Implement graceful error handling and create beautiful user experiences with rich tables in console applications and Tailwind CSS in web interfaces.
 
-### VII. Authentication Rules (Strict)
-**Frontend**: Use `better-auth` to handle Sign-in/Sign-up and issue JWT tokens; **Backend**: MUST NOT manage sessions, it validates the JWT `Bearer` token from the header; **Data Isolation**: All API queries must filter by the `user_id` extracted from the token; **Security**: JWT tokens must be properly validated with appropriate expiration and refresh mechanisms
+### Deployment & Operations
+Use Local Minikube for Phase IV and cloud platforms (DOKS/GKE/AKS) for Phase V. Generate Helm charts using kubectl-ai/kagent for consistent deployments. Implement CI/CD with GitHub Actions and establish comprehensive monitoring and logging solutions.
 
-### VIII. API Standards (Strict)
-All endpoints: `/api/{user_id}/...`; Backend runs on Port `8000`; Frontend runs on Port `3000`; All API responses must follow consistent JSON structure; Error responses must include appropriate HTTP status codes and descriptive messages; API rate limiting and validation required
+### Bonuses Integration
+Create Cloud-Native Blueprints via Agent Skills for +200 bonus points (e.g., spec-driven Kubernetes deployments). Target achieving full bonuses (600) by Phase V through strategic implementation of all bonus features.
 
-### IX. Project Scope (Phase 3: AI Chatbot)
-**Goal**: Build a conversational interface for Todo management; **Architecture**: Stateless HTTP Chat Endpoint -> OpenAI Agents SDK -> MCP Server (Tools); **State**: The server MUST remain stateless. All conversation history persists in `Neon DB`
+### Documentation
+Maintain a comprehensive README.md with setup, run, and deploy instructions. Create CLAUDE.md with clear workflow documentation (e.g., "Implement @specs/features/task-crud.md"). Produce demo videos under 90 seconds per phase to showcase functionality and progress.
 
-### X. Tech Stack & Standards (Phase 3)
-**Protocol**: STRICTLY use **Model Context Protocol (MCP)** for all AI tools; **AI Engine**: **OpenAI Agents SDK** (Python); **Frontend**: **OpenAI ChatKit** (React); **Database**: Add `Conversation` and `Message` tables to SQLModel
+## Constraints:
 
-### XI. MCP Tooling Rules
-Every operation (`add`, `list`, `complete`, `delete`) MUST be an MCP Tool; Tools must accept `user_id` to ensure data isolation; Tools must return structured JSON, not plain text
+- No manual code or infrastructure writing is allowed; if Claude fails, refine the specification until it succeeds.
+- Authentication must use Better Auth with JWT starting from Phase II.
+- Feature progression: Basic features (5 CRUD operations) must be implemented in all phases; add Intermediate features (priorities, tags, search, filter, sort) plus Advanced features (recurring tasks, due dates, reminders) in Phase V.
+- Event-driven architecture using Kafka and Dapr must be implemented from Phase V onwards; implement pub/sub for reminders, recurring tasks, audits, and synchronization.
+- Use platforms such as WSL2 for Windows environments; leverage free tiers (Neon, Redpanda, DO $200 credit) for cost-effective development.
 
-### XII. Documentation Protocol
-Before implementing new SDKs (MCP, Agents), you MUST fetch the latest documentation using tools like context7 and playwright if you are unsure of the syntax
+## Governance:
 
-## Architecture Constraints
+- This constitution supersedes all other documentation; amendments can only occur via new /sp.constitution commands with proper version bump and rationale.
+- All specifications and plans must explicitly reference this constitution to maintain consistency.
+- Any violations of these principles must be documented in specs/amendments.md for audit and review purposes.
 
-- **Backend Framework**: FastAPI with SQLModel for database operations
-- **Frontend Framework**: Next.js 16+ with App Router
-- **Database**: Neon Serverless PostgreSQL only
-- **Authentication**: Better Auth for frontend, JWT verification for backend
-- **API Endpoints**: All must follow `/api/{user_id}/...` pattern
-- **Port Configuration**: Backend on port 8000, Frontend on port 3000
-- **Forbidden**: No other database systems, no session-based authentication
-- **Dependency Management**: Use `uv` for Python, npm/yarn for JavaScript/TypeScript
+## Success Checklist (For Full 1000 + 600 Points):
 
-## Development Workflow
+- [ ] Spec-Driven: All code generated by Claude, complete specs history maintained.
+- [ ] Reusable: Subagents and skills effectively used across multiple phases.
+- [ ] Bonuses: Urdu language support, voice commands, and Blueprints properly implemented.
+- [ ] Deployments: Both Local Minikube and Cloud DOKS working correctly.
+- [ ] Features: All levels (Basic/Intermediate/Advanced) implemented by Phase V.
 
-- frontend/: Next.js application (components, pages, API routes)
-- backend/: FastAPI application (routers, models, services)
-- specs/: Feature specifications and architectural plans
-- data/: Database schema and migration files
-- All new features must have corresponding tests for both frontend and backend
-- Code reviews must verify compliance with architecture constraints
-- Follow separation of concerns strictly between frontend, backend, and shared utilities
+## Version Information:
 
-## Governance
-
-All implementations must comply with this constitution; Architecture violations must be corrected; Dependencies must be added via `uv` for Python and npm/yarn for JS/TS; Database operations must use SQLModel with proper user isolation; Changes to architecture require constitution amendments; Authentication must follow JWT-only approach without sessions
-
-**Version**: 2.1.0 | **Ratified**: 2025-12-12 | **Last Amended**: 2026-01-12
+- Version: 1.0 (December 2025)
+- Ratification Date: 2025-12-12
+- Last Amended Date: 2025-12-12
+- Constitution Version: 1.0.0

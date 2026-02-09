@@ -1,37 +1,66 @@
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
-
 [project]
-name = "from-code-to-cloud-the-evolution-of-todo"
+name = "todo-app"
 version = "0.1.0"
-description = "A terminal-based todo list manager"
+description = "A console-based todo application with in-memory storage"
+authors = [
+    {name = "AHSEN", email = "developer@example.com"}
+]
 readme = "README.md"
 requires-python = ">=3.13"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 dependencies = [
-    "pydantic>=2.12.5",
-    "pytest>=9.0.2",
-    "rich>=14.2.0",
-    "typer>=0.20.0",
-    "questionary>=2.0.0",
-    "pyfiglet>=1.0.4",
-    "sqlmodel>=0.0.27",
-    "httpx>=0.28.1",
+    "typer>=0.9.0",
+    "rich>=13.0.0",
+    "pytest>=7.0.0",
+    "python-multipart>=0.0.20",
+    "mcp>=1.0.0",  # Official MCP SDK for standardized protocol integration
+    "fastapi>=0.127.0",
+    "sqlmodel>=0.0.29",
+    "psycopg2>=2.9.11",
+    "passlib>=1.7.4",
 ]
 
 [project.scripts]
-todo = "src.todo:main"
+start = "src.todo.cli:app"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.0",
-    "black>=23.0",
-    "flake8>=6.0"
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--verbose",
+    "--tb=short",
+    "--strict-markers",
+    "--strict-config",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow running tests",
+    "cli: Tests for CLI components",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
 ]
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["src*"]
+[tool.coverage.run]
+source = ["src/"]
+omit = ["*/tests/*", "*/venv/*", "*/__pycache__/*"]
 
-[tool.uv.workspace]
-members = ["backend"]
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+]

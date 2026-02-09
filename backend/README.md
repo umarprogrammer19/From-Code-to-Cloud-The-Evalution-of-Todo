@@ -1,63 +1,34 @@
-# Task Management API Backend
+# Todo App Backend
 
-This is the backend service for the Task Management application, built with FastAPI and SQLModel.
+This is the backend API for the Todo App, built with FastAPI.
 
-## Features
+## Deployment
 
-- JWT-based authentication and authorization
-- User data isolation (users can only access their own tasks)
-- Full CRUD operations for tasks
-- Task priority management (low, medium, high, urgent)
-- RESTful API design
-- PostgreSQL database with SQLModel ORM
+### For Hugging Face Spaces
 
-## Endpoints
+To deploy this backend on Hugging Face Spaces, you'll need:
 
-All endpoints follow the pattern `/api/{user_id}/...` where `user_id` must match the user_id in the JWT token.
+1. A `Dockerfile` or Python environment with the dependencies in `requirements.txt`
+2. Environment variables:
+   - `BETTER_AUTH_SECRET`: A strong secret key for JWT authentication
+   - `DATABASE_URL`: Database connection string (optional, defaults to local SQLite)
 
-- `POST /api/{user_id}/tasks` - Create a new task (supports priority field)
-- `GET /api/{user_id}/tasks` - Get all tasks for a user (supports priority filtering with ?priority=high)
-- `PUT /api/{user_id}/tasks/{id}` - Update a specific task (supports priority updates)
-- `DELETE /api/{user_id}/tasks/{id}` - Delete a specific task
+### Local Development
 
-## Requirements
-
-- Python 3.13+
-- uv package manager
-- PostgreSQL database (Neon Serverless recommended)
-
-## Setup
-
-1. Install dependencies:
-   ```bash
-   uv sync
-   ```
-
-2. Set up environment variables:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your configuration
-   ```
-
-3. Run the application:
-   ```bash
-   uv run uvicorn main:app --reload --port 8000
-   ```
-
-## Environment Variables
-
-- `DATABASE_URL`: PostgreSQL database connection string
-- `SECRET_KEY`: JWT secret key
-- `ALGORITHM`: JWT algorithm (default: HS256)
-- `ACCESS_TOKEN_EXPIRE_MINUTES`: JWT expiration time (default: 30)
-- `ALLOWED_ORIGINS`: Comma-separated list of allowed origins for CORS
-
-## Development
-
-To run tests:
 ```bash
-uv run pytest
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the application
+python run.py
 ```
 
-## API Documentation
-The API documentation is automatically available at `/docs` when the server is running.
+The API will be available at `http://localhost:8000`
+
+## API Endpoints
+
+- `GET /` - Health check
+- `POST /api/token` - User login
+- `POST /api/users/` - User registration
+- `GET/POST/PUT/DELETE /api/users/tasks` - Task management endpoints
+- `GET/POST /api/chat` - Chat endpoints
