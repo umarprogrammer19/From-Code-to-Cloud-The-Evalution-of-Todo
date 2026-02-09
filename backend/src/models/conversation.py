@@ -19,7 +19,7 @@ class Conversation(SQLModel, table=True):
     """Conversation model representing a logical grouping of messages."""
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    user_id: str = Field(index=True, nullable=False)
+    user_id: int = Field(index=True, nullable=False)
     created_at: datetime = Field(default=datetime.utcnow(), nullable=False)
     updated_at: datetime = Field(default=datetime.utcnow(), nullable=False)
 

@@ -1,6 +1,6 @@
 """Database setup module for chat history feature."""
 
-from sqlmodel import create_engine, Session
+from sqlmodel import create_engine, SQLModel  # Moved SQLModel import
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 import os
@@ -11,13 +11,13 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Get database URL from environment or use default
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./chat_history.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Create engine - using StaticPool for SQLite to avoid threading issues in testing
 engine = create_engine(
     DATABASE_URL,
     echo=os.getenv("DEBUG", "False").lower() == "true",  # Only echo in debug mode
-    poolclass=StaticPool if "sqlite://" in DATABASE_URL else None
+    poolclass=StaticPool if "sqlite://" in DATABASE_URL else None,
 )
 
 # Create session factory
@@ -41,8 +41,9 @@ def get_session():
 
 def create_db_and_tables():
     """Create database tables."""
+    logger.info("Dropping database tables if they exist...")
+    SQLModel.metadata.drop_all(engine)  # Drop all tables
     logger.info("Creating database tables...")
-    from sqlmodel import SQLModel
 
     try:
         SQLModel.metadata.create_all(engine)

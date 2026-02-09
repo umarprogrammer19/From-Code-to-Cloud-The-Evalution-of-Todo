@@ -1,4 +1,5 @@
 .venv
+venv/
 
 # Environment files
 .env
@@ -9,4 +10,8 @@
 
 from_code_to_cloud_the_evolution_of_todo.egg-info
 __pycache__*
+*.pyc
+dist/
+build/
+*.egg
 nul

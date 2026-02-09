@@ -1,238 +1,174 @@
-"""
-AI Agent Runner for MCP Task Management
+import json
+import logging
+from typing import Any, Dict
 
-This module implements the OpenAI agent runner that accepts user_id, message, and conversation_id,
-uses MCP tools to process the message, and returns a final text response.
-"""
-
-from typing import Dict, Any, Optional
 from agents import Agent, Runner, function_tool
-import os
-import sys
-import importlib.util
-from pathlib import Path
+from sqlmodel import Session
 
-# Dynamically import the tools module
-tools_module_path = Path(__file__).parent.parent / "mcp" / "tools.py"
-spec = importlib.util.spec_from_file_location("tools", tools_module_path)
-tools_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(tools_module)
+from database import get_session
+from src.schemas.task import TaskCreate, TaskUpdate
+from src.services.task_service import TaskService
 
-# Import the functions
-add_task = tools_module.add_task
-list_tasks = tools_module.list_tasks
-complete_task = tools_module.complete_task
-delete_task = tools_module.delete_task
-update_task = tools_module.update_task
+logger = logging.getLogger(__name__)
 
-
-class MCPTaskAgent:
-    """
-    MCP Task Management Agent that uses OpenAI Agents SDK to process natural language
-    and execute task management operations.
-    """
-
-    def __init__(self):
-        """
-        Initialize the MCP Task Agent with OpenAI Agents SDK and tools.
-        """
-        # Initialize API key
-        api_key = os.getenv("OPENAI_API_KEY")
-        if not api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
-
-        # Set the API key
-        os.environ["OPENAI_API_KEY"] = api_key
-
-        # Create the agent with function tools
-        self.agent = Agent(
-            name="MCP Task Manager",
-            instructions="You are an AI assistant that helps users manage their tasks. Use the provided tools to add, list, complete, delete, or update tasks. Be helpful and concise in your responses.",
-            tools=[
-                self._create_add_task_tool(),
-                self._create_list_tasks_tool(),
-                self._create_complete_task_tool(),
-                self._create_delete_task_tool(),
-                self._create_update_task_tool(),
-            ],
+# Define function tools for the agent
+@function_tool
+def add_task(user_id: int, title: str, description: str = "", priority: str = "medium") -> str:
+    """Create a new task for the user."""
+    logger.info(f"Agent tool: add_task called for user {user_id}, title: {title}")
+    with next(get_session()) as session:
+        task_create = TaskCreate(
+            title=title,
+            description=description,
+            priority=priority
         )
+        new_task = TaskService.create_task(session=session, task_in=task_create, user_id=user_id)
+        logger.info(f"Agent tool: Task '{new_task.title}' created successfully with ID {new_task.id}.")
 
-        # Create a runner for the agent
-        self.runner = Runner.run_sync(agent=self.agent)
+        return json.dumps({
+            "success": True,
+            "task_id": new_task.id,
+            "message": f"Task '{new_task.title}' created successfully"
+        })
 
-    def _create_add_task_tool(self):
-        """Create the add_task function tool."""
+@function_tool
+def list_tasks(user_id: int, priority: str = None) -> str:
+    """Retrieve all tasks for the user."""
+    logger.info(f"Agent tool: list_tasks called for user {user_id}, priority filter: {priority}")
+    with next(get_session()) as session:
+        tasks = TaskService.get_tasks_by_user(session=session, user_id=user_id, priority=priority)
 
-        @function_tool
-        def add_task_tool(description: str, user_id: str) -> Dict:
-            """
-            Add a new task for a user.
+        tasks_data = []
+        for t in tasks:
+            tasks_data.append({
+                "id": t.id,
+                "title": t.title,
+                "description": t.description,
+                "completed": t.completed,
+                "priority": t.priority.value
+            })
+        logger.info(f"Agent tool: Retrieved {len(tasks_data)} tasks for user {user_id}.")
 
-            Args:
-                description: The task description
-                user_id: The ID of the user who owns the task
+        return json.dumps({
+            "success": True,
+            "tasks": tasks_data,
+            "count": len(tasks_data)
+        })
 
-            Returns:
-                Dict containing the created task information
-            """
-            return add_task(description=description, user_id=user_id)
+@function_tool
+def complete_task(user_id: int, task_id: int) -> str:
+    """Mark a task as completed."""
+    logger.info(f"Agent tool: complete_task called for user {user_id}, task ID: {task_id}")
+    with next(get_session()) as session:
+        # First get the existing task to check if it exists and belongs to user
+        existing_task = TaskService.get_task_by_id(session=session, task_id=task_id, user_id=user_id)
+        if not existing_task:
+            logger.warning(f"Agent tool: Task {task_id} not found or does not belong to user {user_id}.")
+            return json.dumps({
+                "success": False,
+                "message": "Task not found or doesn't belong to user"
+            })
 
-        return add_task_tool
+        # Update the task to mark as completed
+        task_update = TaskUpdate(completed=True)
+        updated_task = TaskService.update_task(session=session, task_id=task_id, task_in=task_update, user_id=user_id)
 
-    def _create_list_tasks_tool(self):
-        """Create the list_tasks function tool."""
+        if updated_task:
+            logger.info(f"Agent tool: Task '{updated_task.title}' (ID: {updated_task.id}) marked as completed.")
+            return json.dumps({
+                "success": True,
+                "message": f"Task '{updated_task.title}' marked as completed"
+            })
+        else:
+            logger.error(f"Agent tool: Failed to update task {task_id} for user {user_id}.")
+            return json.dumps({
+                "success": False,
+                "message": "Failed to update task"
+            })
 
-        @function_tool
-        def list_tasks_tool(user_id: str, completed: Optional[bool] = None) -> list:
-            """
-            List tasks for a user.
+@function_tool
+def delete_task(user_id: int, task_id: int) -> str:
+    """Delete a task."""
+    logger.info(f"Agent tool: delete_task called for user {user_id}, task ID: {task_id}")
+    with next(get_session()) as session:
+        success = TaskService.delete_task(session=session, task_id=task_id, user_id=user_id)
 
-            Args:
-                user_id: The ID of the user whose tasks to list
-                completed: Filter by completion status (None for all, True for completed, False for pending)
+        if success:
+            logger.info(f"Agent tool: Task {task_id} deleted successfully.")
+            return json.dumps({
+                "success": True,
+                "message": "Task deleted successfully"
+            })
+        else:
+            logger.warning(f"Agent tool: Task {task_id} not found or does not belong to user {user_id}.")
+            return json.dumps({
+                "success": False,
+                "message": "Task not found or doesn't belong to user"
+            })
 
-            Returns:
-                List of task dictionaries
-            """
-            return list_tasks(user_id=user_id, completed=completed)
+@function_tool
+def update_task(user_id: int, task_id: int, title: str = None, description: str = None,
+               completed: bool = None, priority: str = None) -> str:
+    """Update an existing task."""
+    logger.info(f"Agent tool: update_task called for user {user_id}, task ID: {task_id}")
+    with next(get_session()) as session:
+        # First get the existing task to check if it exists and belongs to user
+        existing_task = TaskService.get_task_by_id(session=session, task_id=task_id, user_id=user_id)
+        if not existing_task:
+            logger.warning(f"Agent tool: Task {task_id} not found or does not belong to user {user_id}.")
+            return json.dumps({
+                "success": False,
+                "message": "Task not found or doesn't belong to user"
+            })
 
-        return list_tasks_tool
+        # Prepare update data
+        update_data = {}
+        if title is not None:
+            update_data["title"] = title
+        if description is not None:
+            update_data["description"] = description
+        if completed is not None:
+            update_data["completed"] = completed
+        if priority is not None:
+            update_data["priority"] = priority
 
-    def _create_complete_task_tool(self):
-        """Create the complete_task function tool."""
+        # Create TaskUpdate object with provided data
+        task_update = TaskUpdate(**update_data)
+        updated_task = TaskService.update_task(session=session, task_id=task_id, task_in=task_update, user_id=user_id)
 
-        @function_tool
-        def complete_task_tool(task_id: str, user_id: str) -> Dict:
-            """
-            Mark a task as completed.
+        if updated_task:
+            logger.info(f"Agent tool: Task '{updated_task.title}' (ID: {updated_task.id}) updated successfully.")
+            return json.dumps({
+                "success": True,
+                "message": f"Task '{updated_task.title}' updated successfully"
+            })
+        else:
+            logger.error(f"Agent tool: Failed to update task {task_id} for user {user_id}.")
+            return json.dumps({
+                "success": False,
+                "message": "Failed to update task"
+            })
 
-            Args:
-                task_id: The ID of the task to complete
-                user_id: The ID of the user who owns the task
+# Create the agent with task management tools
+agent = Agent(
+    name="Task Management Assistant",
+    instructions="You are a helpful assistant that helps users manage their tasks. Use the available tools to create, list, update, complete, and delete tasks.",
+    tools=[add_task, list_tasks, complete_task, delete_task, update_task],
+)
 
-            Returns:
-                Dict containing the updated task information
-            """
-            return complete_task(task_id=task_id, user_id=user_id)
-
-        return complete_task_tool
-
-    def _create_delete_task_tool(self):
-        """Create the delete_task function tool."""
-
-        @function_tool
-        def delete_task_tool(task_id: str, user_id: str) -> Dict:
-            """
-            Delete a task.
-
-            Args:
-                task_id: The ID of the task to delete
-                user_id: The ID of the user who owns the task
-
-            Returns:
-                Dict containing the deleted task information
-            """
-            return delete_task(task_id=task_id, user_id=user_id)
-
-        return delete_task_tool
-
-    def _create_update_task_tool(self):
-        """Create the update_task function tool."""
-
-        @function_tool
-        def update_task_tool(
-            task_id: str,
-            user_id: str,
-            description: Optional[str] = None,
-            completed: Optional[bool] = None,
-        ) -> Dict:
-            """
-            Update a task.
-
-            Args:
-                task_id: The ID of the task to update
-                user_id: The ID of the user who owns the task
-                description: New description (optional)
-                completed: New completion status (optional)
-
-            Returns:
-                Dict containing the updated task information
-            """
-            return update_task(
-                task_id=task_id,
-                user_id=user_id,
-                description=description,
-                completed=completed,
-            )
-
-        return update_task_tool
-
-    def run_agent(
-        self, user_id: str, message: str, conversation_id: Optional[str] = None
-    ) -> str:
-        """
-        Run the MCP Task agent to process a user message and return a response.
-
-        Args:
-            user_id: The ID of the user
-            message: The user's message
-            conversation_id: The conversation ID (optional, for context)
-
-        Returns:
-            The agent's text response
-        """
-        # Create a thread with the user's message
-        thread = [
-            {"role": "user", "content": f"User ID: {user_id}. Message: {message}"}
-        ]
-
-        # Run the agent
-        result = self.runner(thread=thread)
-
-        # Extract and return the response
-        if result and hasattr(result, "messages"):
-            # Get the last assistant message
-            for msg in reversed(result.messages):
-                if msg.get("role") == "assistant":
-                    return msg.get("content", "")
-
-        # If no assistant message found, return a default response
-        return "I processed your request but couldn't generate a response. Please try again."
-
-
-def run_mcp_agent(
-    user_id: str, message: str, conversation_id: Optional[str] = None
-) -> str:
+async def run_agent(user_id: int, message: str, conversation_id: str) -> str:
     """
-    Convenience function to run the MCP Task agent.
+    Run the AI agent with the given parameters.
 
     Args:
         user_id: The ID of the user
-        message: The user's message
-        conversation_id: The conversation ID (optional)
+        message: The user's message to process
+        conversation_id: The ID of the conversation
 
     Returns:
-        The agent's text response
+        The agent's response as a string
     """
-    agent = MCPTaskAgent()
-    return agent.run_agent(user_id, message, conversation_id)
-
-
-if __name__ == "__main__":
-    # Example usage
-    import sys
-
-    if len(sys.argv) < 3:
-        print("Usage: python runner.py <user_id> <message> [conversation_id]")
-        sys.exit(1)
-
-    user_id = sys.argv[1]
-    message = sys.argv[2]
-    conversation_id = sys.argv[3] if len(sys.argv) > 3 else None
-
-    try:
-        response = run_mcp_agent(user_id, message, conversation_id)
-        print(f"Response: {response}")
-    except Exception as e:
-        print(f"Error: {str(e)}")
-        sys.exit(1)
+    logger.info(f"Running agent for user {user_id}, conversation {conversation_id} with message: {message}")
+    result = await Runner.run(agent, input=message)
+    logger.info(f"Agent finished for user {user_id}, conversation {conversation_id}. Output: {result.final_output}")
+    return result.final_output

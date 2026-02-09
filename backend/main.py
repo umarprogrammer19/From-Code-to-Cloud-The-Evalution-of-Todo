@@ -5,7 +5,7 @@ from src.api.v1.auth import router as auth_router
 from src.api.v1.chat import router as chat_router
 from src.config.settings import settings
 from contextlib import asynccontextmanager
-from data.database import init_db
+from database import create_db_and_tables
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -15,7 +15,7 @@ async def lifespan(app: FastAPI):
     Handle application startup and shutdown events.
     """
     # Initialize the database on startup
-    init_db()
+    create_db_and_tables()
     yield
     # Add any cleanup code here if needed
 
@@ -40,7 +40,7 @@ app.add_middleware(
 app.include_router(tasks_router, prefix="/api/{user_id}/tasks", tags=["tasks"])
 app.include_router(tasks_simple_router, prefix="/api", tags=["tasks-simple"])
 app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
-app.include_router(chat_router, prefix="/api/v1/chat", tags=["chat"])
+app.include_router(chat_router, prefix="/api/{user_id}", tags=["chat"])
 
 
 # Health check endpoint

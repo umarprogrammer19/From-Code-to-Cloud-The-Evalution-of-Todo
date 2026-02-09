@@ -7,7 +7,7 @@ import uuid
 import json
 
 
-def get_or_create_conversation(session: Session, user_id: str) -> Conversation:
+def get_or_create_conversation(session: Session, user_id: int) -> Conversation:
     """Get existing conversation for user or create a new one."""
     # Try to find existing conversation
     statement = select(Conversation).where(Conversation.user_id == user_id)

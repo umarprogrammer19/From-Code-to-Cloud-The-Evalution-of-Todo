@@ -24,22 +24,22 @@ MVP scope includes User Story 1 (AI-Powered Task Management) with minimal viable
 ### Goal
 Initialize project structure and install required dependencies for MCP Agent Backend implementation.
 
-- [ ] T001 Create backend/mcp directory structure
-- [ ] T002 Create backend/agent directory structure
-- [ ] T003 Install OpenAI Agents SDK dependency using uv
-- [ ] T004 Install Model Context Protocol (MCP) Python SDK dependency using uv
-- [ ] T005 Verify existing database connection and SQLModel setup
+- [x] T001 Create backend/mcp directory structure
+- [x] T002 Create backend/agent directory structure
+- [x] T003 Install OpenAI Agents SDK dependency using uv
+- [x] T004 Install Model Context Protocol (MCP) Python SDK dependency using uv
+- [x] T005 Verify existing database connection and SQLModel setup
 
 ## Phase 2: Foundational Tasks
 
 ### Goal
 Establish foundational components required by all user stories.
 
-- [ ] T006 [P] Create backend/mcp/tools.py with basic MCP server setup
-- [ ] T007 [P] Create backend/agent/runner.py with basic agent structure
-- [ ] T008 [P] Verify existing TaskService can be imported and used by new components
-- [ ] T009 [P] Verify existing chat service functions for conversation persistence
-- [ ] T010 [P] Set up proper logging for MCP Agent Backend components
+- [x] T006 [P] Create backend/mcp/tools.py with basic MCP server setup
+- [x] T007 [P] Create backend/agent/runner.py with basic agent structure
+- [x] T008 [P] Verify existing TaskService can be imported and used by new components
+- [x] T009 [P] Verify existing chat service functions for conversation persistence
+- [x] T010 [P] Set up proper logging for MCP Agent Backend components
 
 ## Phase 3: User Story 1 - AI-Powered Task Management (Priority: P1)
 
@@ -49,18 +49,18 @@ As a user, I want to interact with an AI assistant that can manage my tasks thro
 ### Independent Test
 Can be fully tested by sending natural language commands to the chat endpoint and verifying that the appropriate task operations are performed based on the AI's interpretation.
 
-- [ ] T011 [P] [US1] Implement add_task MCP tool in backend/mcp/tools.py
-- [ ] T012 [P] [US1] Implement list_tasks MCP tool in backend/mcp/tools.py
-- [ ] T013 [P] [US1] Implement complete_task MCP tool in backend/mcp/tools.py
-- [ ] T014 [P] [US1] Implement delete_task MCP tool in backend/mcp/tools.py
-- [ ] T015 [P] [US1] Implement update_task MCP tool in backend/mcp/tools.py
-- [ ] T016 [US1] Integrate MCP tools with OpenAI Agent in backend/agent/runner.py
-- [ ] T017 [US1] Implement run_agent function accepting user_id, message, conversation_id in backend/agent/runner.py
-- [ ] T018 [US1] Create POST /api/{user_id}/chat endpoint in backend/api/chat.py
-- [ ] T019 [US1] Implement user message persistence to DB in chat endpoint
-- [ ] T020 [US1] Implement agent execution in chat endpoint
-- [ ] T021 [US1] Implement assistant response persistence to DB in chat endpoint
-- [ ] T022 [US1] Return {conversation_id, response} format from chat endpoint
+- [x] T011 [P] [US1] Implement add_task MCP tool in backend/mcp/tools.py
+- [x] T012 [P] [US1] Implement list_tasks MCP tool in backend/mcp/tools.py
+- [x] T013 [P] [US1] Implement complete_task MCP tool in backend/mcp/tools.py
+- [x] T014 [P] [US1] Implement delete_task MCP tool in backend/mcp/tools.py
+- [x] T015 [P] [US1] Implement update_task MCP tool in backend/mcp/tools.py
+- [x] T016 [US1] Integrate MCP tools with OpenAI Agent in backend/agent/runner.py
+- [x] T017 [US1] Implement run_agent function accepting user_id, message, conversation_id in backend/agent/runner.py
+- [x] T018 [US1] Create POST /api/{user_id}/chat endpoint in backend/api/chat.py
+- [x] T019 [US1] Implement user message persistence to DB in chat endpoint
+- [x] T020 [US1] Implement agent execution in chat endpoint
+- [x] T021 [US1] Implement assistant response persistence to DB in chat endpoint
+- [x] T022 [US1] Return {conversation_id, response} format from chat endpoint
 - [ ] T023 [US1] Test scenario: "Add a task to buy groceries" creates task in user's list
 - [ ] T024 [US1] Test scenario: "What tasks do I have?" returns user's pending tasks
 
